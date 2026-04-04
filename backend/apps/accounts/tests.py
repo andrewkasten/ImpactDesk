@@ -20,11 +20,11 @@ class AuthTest(TestCase):
    def test_auth_user_login(self):
       self.client.force_authenticate(user=self.user)
 
-      response = self.client.get('/api/developments/')
+      response = self.client.get(self.url)
       self.assertEqual(response.status_code, 200)
 
    def test_invalid_login(self):
-      response = self.client.get('/api/developments/')
+      response = self.client.get(self.url)
 
       self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
