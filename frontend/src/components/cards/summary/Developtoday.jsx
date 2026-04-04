@@ -3,7 +3,7 @@ import useSWR from "swr";
 import dayjs from "dayjs";
 import { useTheme } from "@mui/material";
 import { colors } from "../../../../theme";
-
+import {fetcher} from "../../../api/fetcher.js"
 
 export default function DevelopToday() {
   const today = dayjs();
@@ -11,9 +11,9 @@ export default function DevelopToday() {
   const color = colors(theme.palette.mode);
 
   const { data: developments } = useSWR(
-    `http://localhost:8000/api/developments/?date=${today.format("YYYY-MM-DD")}`,
+    `http://localhost:8000/api/developments/?date=${today.format("YYYY-MM-DD")}`, fetcher,
   );
-  console.log(developments.length)
+  // console.log(developments)
   return (
     <Card elevation={1} sx={{ borderRadius: 4, mb: 2 }}>
       <CardContent>
@@ -25,7 +25,7 @@ export default function DevelopToday() {
             <Stack direction="row" sx={{ justifyContent: "space-between" }}>
               <Typography
                 variant="h4"               
-                sx={{ color: `${color.primary[500]}` }}>
+                sx={{ color: `${color.secondary[500]}` }}>
                 {developments?.length}
               </Typography>
             </Stack>

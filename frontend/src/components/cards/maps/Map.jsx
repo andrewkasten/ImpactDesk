@@ -19,7 +19,7 @@ export default function Map() {
           <Typography variant="subtitle">Map</Typography>
           <MapContainer
             center={[40.3590, -111.7095]}
-            zoom={13}
+            zoom={10}
             style={{ height: "510px", width: "100%" }}
           >
             <TileLayer

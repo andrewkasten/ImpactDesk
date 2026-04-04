@@ -22,11 +22,11 @@ const pages = [
     id: "/dashboard/contacts",
     icon: PermContactCalendarOutlinedIcon,
   },
-  {
-    name: "Donations",
-    id: "/dashboard/donations",
-    icon: AccessibilityNewOutlinedIcon,
-  }, 
+  // {
+  //   name: "Donations",
+  //   id: "/dashboard/donations",
+  //   icon: AccessibilityNewOutlinedIcon,
+  // }, 
 ];
 
 function Sidenav() {

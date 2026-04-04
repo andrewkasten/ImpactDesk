@@ -15,7 +15,7 @@ export default function DashboardHome() {
 
   return (
     <>
-      <Typography variant="h4" sx={{ color: `${color.primary[600]}`, pb: 3 }}>
+      <Typography variant="h4" sx={{ color: `${color.primary[500]}`, pb: 3 }}>
         Today {today.format("MM-DD")}
       </Typography>
       <Grid container spacing={3}>

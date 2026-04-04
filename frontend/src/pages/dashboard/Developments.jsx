@@ -19,6 +19,8 @@ export default function Developments() {
   const [selectedDay, setSelectedDay] = useState(today)
   const token = localStorage.getItem("token")
 
+  // console.log(selectedWeek)
+  // console.log(selectedDay.format('MMM'))
 
   const { data: developments, mutate: refreshDevelopments} = useSWR(
     token ? `http://localhost:8000/api/developments/?date=${selectedDay.format("YYYY-MM-DD")}` : null,
@@ -42,9 +44,9 @@ export default function Developments() {
     <>
       <DevelopmentsContext.Provider value={{ developments: developmentsList, refreshDevelopments }}>
       <Typography variant="h4" textAlign="center" color="primary"> Development Schedule</Typography>
-
-      <Grid sx={{display: "flex", pt:3, justifyContent: "center"}}>
-        <Stack direction="row" spacing={{xs:2.7, md:3, lg:3.14,}} >
+      <Typography sx={{pt:3}}variant="h6" fontSize= "18px" textAlign="center">{selectedDay.format('MMMM YYYY')}</Typography>
+      <Grid sx={{display: "flex", pt:.5, justifyContent: "center"}}>
+        <Stack direction="row" spacing={{xs:2.7, md:3, lg:3.1,}} >       
         <Typography variant="subtitle2">SUN</Typography>
         <Typography variant="subtitle2">MON</Typography>
         <Typography variant="subtitle2">TUE</Typography>

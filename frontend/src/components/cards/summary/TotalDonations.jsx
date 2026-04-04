@@ -13,7 +13,7 @@ export default function TotalDonations() {
     fetcher,
   );
   
-// console.log(donations.length) 
+// console.log(donations[0].total_donations) 
 
 
   return (
@@ -31,8 +31,9 @@ export default function TotalDonations() {
                 alignItems: "center",
                 gap: 1,
               }}>
-              <Typography variant="h4" component="p"  sx={{ color: `${color.primary[500]}` }}>
-                {donations != 'undefined' ?   "" : `$${donations[0].total_donations}` }              
+              <Typography variant="h4" component="p"  sx={{ color: `${color.secondary[500]}` }}>
+                ${donations?.[0]?.total_donations}
+                {/*{donations[0] != 'undefined' ?  `$${donations?[0]?.total_donations}` : " "}               */}
               </Typography>
             </Stack>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>

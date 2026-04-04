@@ -23,7 +23,7 @@ export default function TablePeople() {
        <Typography sx={{ pl: 1}} variant="subtitle">
             People
           </Typography>
-      <Table aria-label="a table of people contacts" >         
+      <Table size="small" aria-label="a table of people contacts" >         
         <TableHead>        
           <TableRow >
             <TableCell style={{paddingTop:"20px"}} >Name</TableCell>
@@ -50,7 +50,7 @@ export default function TablePeople() {
               <TableCell align="center">{person.city}</TableCell>
               <TableCell align="center">{person.state}</TableCell>
               <TableCell align="center">{person.zip_code}</TableCell>
-              <TableCell style={{color:`${color.success[600]}`}} align="center">{person.donation_total}</TableCell>
+              <TableCell style={{color:`${color.success[600]}`}} align="center">${person.donation_total}</TableCell>
               <TableCell>
                 <IconButton>
                   <DeleteOutlineIcon sx={{color:`${color.error[400]}`}} />
