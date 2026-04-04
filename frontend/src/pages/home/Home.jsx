@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import ImageList from "@mui/material/ImageList";
 import idHero from "../../assets/ID-hero.webp"
 import mainDash from "../../assets/main-dash.webp"
 
@@ -64,17 +63,7 @@ export default function Home() {
             >
               Start now
             </Button>
-            {/* <ImageList
-            variant="standard"
-              sx={{ width:1200}}
-              cols={1}
-              rowHeight={0}
-            > */}
-            1876 px
-            1036 px
-              <img style={{borderRadius:8, maxWidth: "1200px", width:"auto"}} alt="image: dashboard home: side menu, development card, donation s card, donations graph, top donors list"src={mainDash} />
-              
-            {/* </ImageList> */}
+           <img style={{borderRadius:8, border: "2px solid gray", maxWidth: "105%", height:"auto", display:"block", margin:"20px"}} alt="image: dashboard home: side menu, development card, donation s card, donations graph, top donors list"src={mainDash} />             
           </Stack>
         </Container>
       </Box>
