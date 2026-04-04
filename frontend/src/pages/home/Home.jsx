@@ -4,8 +4,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import idHero from "../../assets/ID-hero.webp"
+import mainDash from "../../assets/main-dash.webp"
+
 
 export default function Home() {
   return (
@@ -63,13 +64,17 @@ export default function Home() {
             >
               Start now
             </Button>
-            <ImageList
-              sx={{ width: "100%", height: 600, border: 3, borderColor: "red" }}
+            {/* <ImageList
+            variant="standard"
+              sx={{ width:1200}}
               cols={1}
               rowHeight={0}
-            >
-              <ImageListItem></ImageListItem>
-            </ImageList>
+            > */}
+            1876 px
+            1036 px
+              <img style={{borderRadius:8, maxWidth: "1200px", width:"auto"}} alt="image: dashboard home: side menu, development card, donation s card, donations graph, top donors list"src={mainDash} />
+              
+            {/* </ImageList> */}
           </Stack>
         </Container>
       </Box>
