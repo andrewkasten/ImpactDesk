@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import date
-from django.core import validators as v
 from apps.people.models import People
 from apps.organizations.models import Organizations
 
@@ -16,17 +15,17 @@ class Developments(models.Model):
 
     type = models.CharField(max_length=255)
     date =  models.DateField(default=date.today)
-    time = models.TimeField(default='0800')
-    end_time = models.TimeField(default='0900', blank=True, null=True)
+    time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     status = models.CharField( max_length=10, default="Scheduled", choices = STATUS_CHOICES)   
-    note = models.TextField(blank=True, null=True, validators=[v.MaxLengthValidator(150)])
+    note = models.TextField(blank=True)
     street = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
     state = models.CharField(max_length=255, blank=True)
-    zip_code = models.CharField(max_length=10, blank=True, null=True)
+    zip_code = models.CharField(max_length=10, blank=True)
     
-    lat = models.DecimalField(max_digits=20, decimal_places=15, blank=True, default=0)
-    lng = models.DecimalField(max_digits=20, decimal_places=15, blank=True, default=0)
+    lat = models.DecimalField(max_digits=25, decimal_places=15, blank=True, default=0)
+    lng = models.DecimalField(max_digits=25, decimal_places=15, blank=True, default=0)
     
     people = models.ForeignKey(People, on_delete=models.CASCADE, null=True, blank=True)
     organization = models.ForeignKey(Organizations, on_delete=models.CASCADE, null=True, blank=True)
