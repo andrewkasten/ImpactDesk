@@ -17,7 +17,7 @@ export default function TableOrganization() {
   // console.log(people)
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 4, p:1}}>
-      <Table size="small" aria-label="two tables Organizations and Contacts">
+      <Table  size="small" aria-label="a table of organization contacts">
         <TableHead>
             <Typography sx={{ pl:1}}
           variant="subtitle">
