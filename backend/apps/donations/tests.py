@@ -17,7 +17,6 @@ class DonationsTest(TestCase):
          zip_code=16151,
          )     
 
-
    def test_donation_has_people(self):
 
       first = People.objects.get(first_name="First")
