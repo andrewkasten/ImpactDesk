@@ -18,9 +18,7 @@ SECRET_KEY = os.getenv("DJANGO_KEY")
 
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -48,7 +46,6 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
