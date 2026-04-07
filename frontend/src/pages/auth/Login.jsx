@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { login } from "../../api/authApi";
 import { Navigate } from "react-router-dom";
-import {
-  Stack,
-  Card,
-  Button,
-  CardContent,
-  Typography,
-  OutlinedInput,
-  Box,
-  InputLabel,
-  Container,
-} from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import Container from "@mui/material/Container";
 import idMonogram from '../../assets/id-Monogram.png'
 
 export default function Login({}) {

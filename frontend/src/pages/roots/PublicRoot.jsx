@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Homenav from "../../components/navbars/Homenav"
-import {CssBaseline, ThemeProvider} from "@mui/material"
+import CssBaseline from "@mui/material/CssBaseline";
+import {ThemeProvider} from "@mui/material/styles";
 import {ColorModeContext, useMode} from '../../../theme'
 
 

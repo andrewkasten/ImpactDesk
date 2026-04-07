@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import DonationChart from "../../components/cards/charts-tables/Donationchart";
-import { useTheme } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { colors } from "../../../theme";
 import DevelopToday from "../../components/cards/summary/Developtoday";
 import TopDonors from "../../components/cards/summary/TopDonors";

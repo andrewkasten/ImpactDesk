@@ -1,7 +1,11 @@
 import { BarChart } from '@mui/x-charts/BarChart'
-import {Box, Card, CardContent,Typography, Stack} from "@mui/material"
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import useSWR from "swr";
-import { useTheme } from '@mui/material'
+import { useTheme } from "@mui/material/styles";
 import {colors} from "../../../../theme"
 import {fetcher} from "../../../api/fetcher"
 

@@ -12,7 +12,7 @@ import LooksTwoOutlinedIcon from "@mui/icons-material/LooksTwoOutlined";
 import Looks3OutlinedIcon from "@mui/icons-material/Looks3Outlined";
 import Looks4OutlinedIcon from "@mui/icons-material/Looks4Outlined";
 import Looks5OutlinedIcon from "@mui/icons-material/Looks5Outlined";
-import { useTheme } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { colors } from "../../../../theme";
 import useSWR from "swr";
 import { fetcher } from "../../../api/fetcher";

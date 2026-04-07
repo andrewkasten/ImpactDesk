@@ -1,10 +1,8 @@
-import {
-  Button,
-  TextField,
-  Box,
-  Card,
-  CardContent,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 // action returns {current state}, {new action}, {isPending} boolean
 

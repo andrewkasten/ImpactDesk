@@ -1,4 +1,8 @@
-import {   Grid,  Typography, Button,  IconButton,  Stack,} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import Map from "../../components/cards/maps/Map.jsx";
 import ListDevelopments from "../../components/cards/lists/ListDevelopments.jsx";
 import DevelopmentForm from "../../components/cards/forms/DevelopmentForm.jsx";

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import Grid from "@mui/material/Grid";
 import DonationForm from "../../components/cards/forms/Donationform"
 import DonationChart from "../../components/cards/charts-tables/Donationchart"
 

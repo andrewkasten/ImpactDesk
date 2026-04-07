@@ -1,7 +1,10 @@
-import { Card, CardContent, Stack, Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import useSWR from "swr";
 import dayjs from "dayjs";
-import { useTheme } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { colors } from "../../../../theme";
 import {fetcher} from "../../../api/fetcher.js"
 

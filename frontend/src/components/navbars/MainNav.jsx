@@ -1,5 +1,12 @@
 import { useState, useContext } from "react";
-import { useTheme, Stack, Box, Tooltip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import LetterAvatar from "./LetterAvatar";
 import useSWR from "swr"

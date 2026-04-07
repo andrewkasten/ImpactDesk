@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Sidenav from "../../components/navbars/Sidenav";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import MainNav from "../../components/navbars/MainNav";
 import Homenav from "../../components/navbars/Homenav";
 import { SWRConfig } from "swr";
 import Bottomnav from "../../components/navbars/Bottomnav";
-
-import {CssBaseline, ThemeProvider} from "@mui/material"
+import CssBaseline from "@mui/material/CssBaseline";
+import {ThemeProvider} from "@mui/material/styles";
 import {ColorModeContext, useMode} from '../../../theme'
 
 
@@ -35,8 +35,9 @@ function DashboardLayout() {
             minHeight: "100vh",
            }}
         >
-          <Box sx={{ display: {xs: "none", sm: "none", md: "flex"} }}> <Sidenav/></Box>
-       
+          <Box sx={{ display: {xs: "none", sm: "none", md: "flex"} }}> 
+            <Sidenav/>
+          </Box>       
           <Box
             component="main"
             sx={{
