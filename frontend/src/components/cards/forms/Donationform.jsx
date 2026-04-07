@@ -18,9 +18,6 @@ async function formAction(prevState, formData) {
  
 }
 
-
-
-
 export default function DonationForm() {
 
   return (

@@ -6,28 +6,10 @@ import Stack from '@mui/material/Stack'
 import { useTheme } from '@mui/material'
 import { useState} from "react"
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
-import PermContactCalendarOutlinedIcon from "@mui/icons-material/PermContactCalendarOutlined";
-import AccessibilityNewOutlinedIcon from "@mui/icons-material/AccessibilityNewOutlined";
 import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowRightOutlined";
+import { pages } from "../../assets/linksData"
 
-const pages = [
-  {
-    name: "Development",
-    id: "/dashboard/developments",
-    icon: EventOutlinedIcon,
-  },
-  {
-    name: "Contacts",
-    id: "/dashboard/contacts",
-    icon: PermContactCalendarOutlinedIcon,
-  },
-  // {
-  //   name: "Donations",
-  //   id: "/dashboard/donations",
-  //   icon: AccessibilityNewOutlinedIcon,
-  // }, 
-];
+
 
 function Sidenav() {
   const theme = useTheme();

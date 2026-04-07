@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -16,9 +15,6 @@ export default function TotalDonations() {
     "http://localhost:8000/api/donations/",
     fetcher,
   );
-  
-// console.log(donations[0].total_donations) 
-
 
   return (
     <>
@@ -37,7 +33,6 @@ export default function TotalDonations() {
               }}>
               <Typography variant="h4" component="p"  sx={{ color: `${color.secondary[500]}` }}>
                 ${donations?.[0]?.total_donations}
-                {/*{donations[0] != 'undefined' ?  `$${donations?[0]?.total_donations}` : " "}               */}
               </Typography>
             </Stack>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>

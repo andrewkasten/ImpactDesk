@@ -9,222 +9,160 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useState } from "react";
-import axios from "axios";
-
+import useContactForm from "../../../hooks/useContactForm";
 
 export default function ContactForm() {
-    const token = localStorage.getItem("token");  
-        
-    const [selectType, setSelectType] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [street, setStreet] = useState();
-    const [city, setCity] = useState();
-    const [state, setState] = useState();
-    const [zipCode, setZipCode] = useState();
-    const [title, setTitle] = useState("");
-    const [website, setWebsite] = useState("");
+  const { stateContact, setContactField, handleContactSubmit,} = useContactForm();
 
-
-    const handleSelectType = (e) => {
-    setSelectType(e.target.value);
-  }
-
-  async function handleSubmit() { 
-    const personObject = {
-      first_name: firstName,
-      last_name: lastName,
-      phone: phone,
-      email: email,
-      street: street,
-      city: city,
-      state: state,
-      zip_code: zipCode,
-    };
-
-    const organizationObject = {
-      title: title,
-      website: website,
-      phone: phone,
-      email: email,
-      street: street,
-      city: city,
-      state: state,
-      zip_code: zipCode,
-    };
-
-      if (selectType === "Person") {
-      await axios.post("http://localhost:8000/api/people/", personObject ,{
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }
-
-      );
-    }
-    if (selectType === "Organization") {
-      await axios.post(
-        "http://localhost:8000/api/organizations/",
-        organizationObject,
-        {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }
-      );
-    }
-
-  }
-
-    return (
-
-        <Card elevation={2} sx={{ borderRadius: 4}}>
-            <CardContent>
-                <Typography variant="subtitle">New Contact </Typography>
-                <Box component="form" autoComplete="on" sx={{pt:2}}>
-                    <Grid 
-                    container
-                    rowSpacing={2}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3, lg: 3, }}
-                    columns={{ md: 12 }}>
-                        <Grid size={{ xs: 7, sm: 5, md: 5, lg: 2 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="contact-type">Type</InputLabel>
-                                <Select
-                                fullWidth
-                                labelID="contact-type"
-                                value={selectType}
-                                onChange={handleSelectType}
-                                >
-                                    <MenuItem value={"Person"}>Person</MenuItem>
-                                    <MenuItem value={"Organization"}>Organization</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                            {selectType === "Person" ?
-                                <>
-                                <Grid size={{ xs: 8, sm: 5, md: 5, lg: 2 }}>
-                                    <TextField
-                                        variant="outlined"
-                                        label="First Name"
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                        fullWidth
-                                        slotProps={{ inputLabel: { shrink: true } }}
-                                    />
-                                    </Grid>
-                                     <Grid size={{ xs: 8, sm: 5, md: 5, lg: 2 }}>
-                                    <TextField
-                                        variant="outlined"
-                                        label="Last Name"
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                        fullWidth
-                                        slotProps={{ inputLabel: { shrink: true } }}
-                                    />
-                                    </Grid>
-                                </>
-                                :
-                                <> 
-                                <Grid size={{ xs: 8, sm: 5, md: 5, lg: 3 }}>                             
-                            <TextField
-                              variant="outlined"
-                              label="Name"
-                              value={title}
-                              onChange={(e) => setTitle(e.target.value)}
-                              fullWidth
-                              slotProps={{ inputLabel: { shrink: true } }}
-                            />
-                            </Grid> 
-                             <Grid size={{ xs: 9, sm: 5, md: 5, lg: 3 }}> 
-                            <TextField
-                              variant="outlined"
-                              label="Website"
-                              value={website}
-                              onChange={(e) => setWebsite(e.target.value)}
-                              fullWidth
-                              slotProps={{ inputLabel: { shrink: true } }}
-                            />
-                              </Grid> 
-                          </>
-                        }
-                        <Grid size={{ xs: 8, sm: 5, md: 5, lg: 3 }}>
-                        <TextField
-                          variant="outlined"
-                          label="Phone"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          fullWidth
-                          slotProps={{ inputLabel: { shrink: true } }}
-                        />
-                        </Grid>
-                        <Grid size={{ xs: 9, sm: 5, md: 5, lg: 3 }}>
-                        <TextField
-                          variant="outlined"
-                          label="Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          fullWidth
-                          slotProps={{ inputLabel: { shrink: true } }}
-                        />
-                        </Grid>
-                       <Grid size={{ xs: 9, sm: 5, md: 5, lg: 4 }}>
-                <TextField
-                  label="Street"
-                  variant="outlined"
-                  value={street}
-                  onChange={(e) => setStreet(e.target.value)}
+  return (
+    <Card elevation={2} sx={{ borderRadius: 4 }}>
+      <CardContent>
+        <Typography variant="subtitle">New Contact </Typography>
+        <Box component="form" autoComplete="on" sx={{ pt: 2 }}
+        onSubmit={(e) => { e.preventDefault(); handleContactSubmit(); }} >
+          <Grid
+            container
+            rowSpacing={2}
+            columnSpacing={{ xs: 1, sm: 2, md: 3, lg: 3 }}
+            columns={{ md: 12 }}
+          >
+            <Grid size={{ xs: 7, sm: 5, md: 5, lg: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel id="contact-type">Type</InputLabel>
+                <Select
                   fullWidth
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
-              </Grid>
-              <Grid size={{ xs: 7, sm: 4, md: 4, lg: 3 }}>
-                <TextField
-                  label="City"
-                  variant="outlined"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  fullWidth
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
-              </Grid>
-              <Grid size={{ xs: 3, sm: 2, md: 2, lg: 1 }}>
-                <TextField
-                  label="State"
-                  variant="outlined"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  fullWidth
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
-                <TextField
-                  label="Zip Code"
-                  variant="outlined"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  fullWidth
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
-              </Grid>
-                  
-                    </Grid>
-                </Box>
-                <Button sx={{ mt: 2 }} variant="contained" onClick={handleSubmit}>
-            Submit
-          </Button>
-            </CardContent>
-        </Card>
-
-
-    )
-
+                  labelID="contact-type"
+                  value={stateContact.selectTypeContact}
+                  onChange={(e) =>
+                    setContactField("selectTypeContact", e.target.value)
+                  }
+                >
+                  <MenuItem value={"Person"}>Person</MenuItem>
+                  <MenuItem value={"Organization"}>Organization</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            {stateContact.selectTypeContact === "Person" ? (
+              <>
+                <Grid size={{ xs: 8, sm: 5, md: 5, lg: 2 }}>
+                  <TextField
+                    variant="outlined"
+                    label="First Name"
+                    value={stateContact.firstName}
+                    onChange={(e) =>
+                      setContactField("firstName", e.target.value)
+                    }
+                    fullWidth
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+                </Grid>
+                <Grid size={{ xs: 8, sm: 5, md: 5, lg: 2 }}>
+                  <TextField
+                    variant="outlined"
+                    label="Last Name"
+                    value={stateContact.lastName}
+                    onChange={(e) =>
+                      setContactField("lastName", e.target.value)
+                    }
+                    fullWidth
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Grid size={{ xs: 8, sm: 5, md: 5, lg: 3 }}>
+                  <TextField
+                    variant="outlined"
+                    label="Name"
+                    value={stateContact.title}
+                    onChange={(e) =>
+                      setContactField("title", e.target.value)
+                    }
+                    fullWidth
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+                </Grid>
+                <Grid size={{ xs: 9, sm: 5, md: 5, lg: 3 }}>
+                  <TextField
+                    variant="outlined"
+                    label="Website"
+                    value={stateContact.website}
+                    onChange={(e) =>
+                      setContactField("website", e.target.value)
+                    }
+                    fullWidth
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+                </Grid>
+              </>
+            )}
+            <Grid size={{ xs: 8, sm: 5, md: 5, lg: 3 }}>
+              <TextField
+                variant="outlined"
+                label="Phone"
+                value={stateContact.phone}
+                onChange={(e) => setContactField("phone", e.target.value)}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Grid>
+            <Grid size={{ xs: 9, sm: 5, md: 5, lg: 3 }}>
+              <TextField
+                variant="outlined"
+                label="Email"
+                value={stateContact.email}
+                onChange={(e) => setContactField("email", e.target.value)}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Grid>
+            <Grid size={{ xs: 9, sm: 5, md: 5, lg: 4 }}>
+              <TextField
+                label="Street"
+                variant="outlined"
+                value={stateContact.street}
+                onChange={(e) => setContactField("street", e.target.value)}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Grid>
+            <Grid size={{ xs: 7, sm: 4, md: 4, lg: 3 }}>
+              <TextField
+                label="City"
+                variant="outlined"
+                value={stateContact.city}
+                onChange={(e) => setContactField("city", e.target.value)}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Grid>
+            <Grid size={{ xs: 3, sm: 2, md: 2, lg: 1 }}>
+              <TextField
+                label="State"
+                variant="outlined"
+                value={stateContact.state}
+                onChange={(e) => setContactField("state", e.target.value)}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Grid>
+            <Grid size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+              <TextField
+                label="Zip Code"
+                variant="outlined"
+                value={stateContact.zipCode}
+                onChange={(e) => setContactField("zipCode", e.target.value)}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+        <Button sx={{ mt: 2 }} variant="contained" type="submit">
+          Submit
+        </Button>
+      </CardContent>
+    </Card>
+  );
 }

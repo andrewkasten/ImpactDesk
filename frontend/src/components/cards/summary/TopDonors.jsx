@@ -25,8 +25,6 @@ export default function TopDonors() {
     "http://localhost:8000/api/people/",
     fetcher,
   );
-  //   console.log(people.sort((a,b) => b.donation_total - a.donation_total))
-  // const sortTotal = people.sort((a,b) => b.donation_total - a.donation_total)
 
   const icons = [
     { icon: LooksOneOutlinedIcon, color: `${color.secondary[600]}` },

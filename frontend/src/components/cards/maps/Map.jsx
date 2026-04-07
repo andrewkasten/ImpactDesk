@@ -7,12 +7,9 @@ import { time12 } from "../../../functions/formatData";
 import DevelopmentsContext from '../../../contexts/DevelopmentsContext'
 import { useContext } from "react"
 
-
-
 export default function Map() {
   const { developments } = useContext(DevelopmentsContext)  
   const developmentList = Array.isArray(developments) ? developments : []
-  // console.log('map',activities)
    //activities?.map only checks if undefined or null not wrong type, .map needs an array []
   return (
     <>

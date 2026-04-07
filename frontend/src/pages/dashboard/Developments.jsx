@@ -23,16 +23,13 @@ export default function Developments() {
   const [selectedDay, setSelectedDay] = useState(today)
   const token = localStorage.getItem("token")
 
-  // console.log(selectedWeek)
-  // console.log(selectedDay.format('MMM'))
-
+  //mutate(key) (or just mutate() with the bound mutate API) with no data will trigger a revalidation 
   const { data: developments, mutate: refreshDevelopments} = useSWR(
     token ? `http://localhost:8000/api/developments/?date=${selectedDay.format("YYYY-MM-DD")}` : null,
     fetcher,    
   )
   const developmentsList = Array.isArray(developments) ? developments : []
  
-//mutate(key) (or just mutate() with the bound mutate API) with no data will trigger a revalidation 
 
   const changePrevWeek = (prevWeek) => {
     setSelectedWeek(prevWeek)

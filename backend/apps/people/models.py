@@ -9,4 +9,5 @@ class People(models.Model):
     street = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
     state = models.CharField(max_length=255, null=True, blank=True)
-    zip_code = models.IntegerField(blank=True, null=True)
+    zip_code = models.CharField(max_length=10,blank=True, null=True)
+

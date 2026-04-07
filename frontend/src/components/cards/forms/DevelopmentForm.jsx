@@ -13,151 +13,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useState, useContext } from "react";
-import axios from "axios";
-import { setKey, fromAddress, setLocationType } from "react-geocode";
-import useSWR from "swr";
-import DevelopmentsContext from "../../../contexts/DevelopmentsContext";
-import dayjs from "dayjs";
-import {fetcher} from "../../../api/fetcher";
-
-setKey(import.meta.env.VITE_GEOCODE_KEY)
-setLocationType("ROOFTOP")
+import useDevelopmentForm from "../../../hooks/useDevelopmentForm";
+import useContactForm from "../../../hooks/useContactForm";
 
 export default function DevelopmentForm() {
-  const { refreshDevelopments: refresh } = useContext(DevelopmentsContext);
-  const token = localStorage.getItem("token");
-  const { data: people = [] } = useSWR(token ? "http://localhost:8000/api/people/" : null, fetcher);
-  const { data: organization = [] } = useSWR(
-    token ? "http://localhost:8000/api/organizations/" : null, fetcher
-  );
-  const today = dayjs();
-
-  const [type, setType] = useState("");
-  const [date, setDate] = useState(today.format("YYYY-MM-DD"));
-  const [time, setTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [status, setStatus] = useState("Pending");
-  const [note, setNote] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [title, setTitle] = useState("");
-  const [website, setWebsite] = useState("");
-  const [peopleID, setPeopleID] = useState("");
-  const [organizationID, setOrganizationID] = useState("");
-  const lat = 0;
-  const lng = 0;
-  const [selectTypeContact, setSelectTypeContact] = useState("");
-  const [selectType, setSelectType] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleSelect = (e) => {
-    setSelectTypeContact(e.target.value);
-  };
-
-  const handleSelectType = (e) => {
-    setSelectType(e.target.value);
-    setType(e.target.value);
-  };
-
-  async function handleSubmit() {
-    const developmentObject = {
-      type: type,
-      date: date,
-      time: time,
-      end_time: endTime,
-      status: status,
-      note: note,
-      street: street,
-      city: city,
-      state: state,
-      zip_code: zipCode,
-      people: peopleID,
-      organization: organizationID,
-      lat: lat,
-      lng: lng,
-    };
-    const address = `${street} ${city} ${state} ${zipCode}`;
-    if (zipCode) {
-      await fromAddress(address)
-        .then(({ results }) => {
-          const { lat, lng } = results[0].geometry.location;
-          developmentObject.lat = lat;
-          developmentObject.lng = lng;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-
-    await axios.post("http://localhost:8000/api/developments/", developmentObject, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    await refresh();
-  }
-
-  async function handleAdd() {
-    const personObject = {
-      first_name: firstName,
-      last_name: lastName,
-      phone: phone,
-      email: email,
-      street: street,
-      city: city,
-      state: state,
-      zip_code: zipCode,
-    };
-    const organizationObject = {
-      title: title,
-      website: website,
-      phone: phone,
-      email: email,
-      street: street,
-      city: city,
-      state: state,
-      zip_code: zipCode,
-    };
-
-    if (selectTypeContact === "Person") {
-      await axios.post("http://localhost:8000/api/people/", personObject ,{
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }
-      );
-    }
-    if (selectTypeContact === "Organization") {
-      await axios.post(
-        "http://localhost:8000/api/organizations/",
-        organizationObject,
-        {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }
-      );
-    }
-  }
-
-
+  const { stateDev: state, setField, handleSubmit} = useDevelopmentForm();
+  const { stateContact, setContactField, handleContactSubmit, people, organization } = useContactForm(); 
   
-
   return (
     <>
       <Card elevation={2} sx={{ borderRadius: 4}} >
@@ -179,8 +41,8 @@ export default function DevelopmentForm() {
                   MenuProps={{ disableScrollLock: true }}
                     labelId="development-type"
                     label="Type"
-                    value={selectType}
-                    onChange={handleSelectType}
+                    value={state.type}
+                    onChange={(e) => setField("type",e.target.value)}
                     fullWidth
                     required
                     >
@@ -189,18 +51,16 @@ export default function DevelopmentForm() {
                     <MenuItem value={"Event"}>Event</MenuItem>
                   </Select>
                 </FormControl>
-              </Grid>
-              
-              <Grid size={{ xs: 4, sm: 4, md: 4, lg: 1.5 }}>
-                
+              </Grid>              
+              <Grid size={{ xs: 4, sm: 4, md: 4, lg: 1.5 }}>                
                 <FormControl fullWidth>
                   <InputLabel id="development-contact">Contact</InputLabel>
                   <Select
                   MenuProps={{ disableScrollLock: true }}
                     labelId="development-contact"
                     label="Contact"
-                    value={selectTypeContact}
-                    onChange={handleSelect}
+                    value={stateContact.selectTypeContact}
+                    onChange={(e) => setContactField("selectTypeContact",e.target.value)}
                     fullWidth>
                     <MenuItem value={"Person"}>Person</MenuItem>
                     <MenuItem value={"Organization"}>Organization</MenuItem>
@@ -212,7 +72,7 @@ export default function DevelopmentForm() {
               <Button
                 sx={{ m: 1,p:.5 }}
                 variant="outlined"
-                onClick={() => handleClickOpen()}>
+                onClick={() => setField("open", !state.open)}>
                 Add Contact
               </Button>
               </Grid>
@@ -225,21 +85,22 @@ export default function DevelopmentForm() {
                     labelId="development-list"
                     label="List"
                     value={
-                      selectTypeContact === "Person" ? peopleID : organizationID
+                      stateContact.selectTypeContact === "Person" ? state.peopleID : state.organizationID
                     }
                     onChange={(e) => {
-                      selectTypeContact === "Person" ?
-                        setPeopleID(e.target.value)
-                      : setOrganizationID(e.target.value);
+                      stateContact.selectTypeContact === "Person" ?
+                      setField("peopleID",e.target.value)
+                      : 
+                      setField("organizationID",e.target.value)
                     }}>
-                    {selectTypeContact === "Person" ?
+                    {stateContact.selectTypeContact === "Person" ?
                       people?.map((person) => (
                         <MenuItem key={person.id} value={person.id}>
                           {person.first_name} {person.last_name}
                         </MenuItem>
                       ))
                     : null}
-                    {selectTypeContact == "Organization" ?
+                    {stateContact.selectTypeContact == "Organization" ?
                       organization?.map((organization) => (
                         <MenuItem key={organization.id} value={organization.id}>
                           {organization.title}
@@ -249,7 +110,7 @@ export default function DevelopmentForm() {
                   </Select>
                 </FormControl>
 
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog open={state.open} onClose={() => setField("open", !state.open)}>
                   <Box
                     component="form"
                     autoComplete="on"
@@ -257,7 +118,7 @@ export default function DevelopmentForm() {
                       display: "grid",
                       direction: "row",
                     }}
-                    onSubmit={(e) => { e.preventDefault(); handleAdd(); }}
+                    onSubmit={(e) => { e.preventDefault(); handleContactSubmit(); }}
                     >
                       
                     <DialogContent>
@@ -271,7 +132,7 @@ export default function DevelopmentForm() {
                           gap: 2,
                           m: 0,
                         }}>
-                        {selectTypeContact === "Person" ?
+                        {stateContact.selectTypeContact === "Person" ?
                           <>
                             <DialogTitle>Add Person</DialogTitle>
                             <br></br>
@@ -279,8 +140,8 @@ export default function DevelopmentForm() {
                             <TextField
                               variant="outlined"
                               label="First Name"
-                              value={firstName}
-                              onChange={(e) => setFirstName(e.target.value)}
+                              value={stateContact.firstName}
+                              onChange={(e) => setContactField("firstName",e.target.value)}
                               fullWidth
                               required
                               slotProps={{ inputLabel: { shrink: true } }}
@@ -288,8 +149,8 @@ export default function DevelopmentForm() {
                             <TextField
                               variant="outlined"
                               label="Last Name"
-                              value={lastName}
-                              onChange={(e) => setLastName(e.target.value)}
+                              value={stateContact.lastName}
+                              onChange={(e) => setContactField("lastName",e.target.value)}
                               fullWidth
                               slotProps={{ inputLabel: { shrink: true } }}
                             />
@@ -300,8 +161,8 @@ export default function DevelopmentForm() {
                             <TextField
                               variant="outlined"
                               label="Title"
-                              value={title}
-                              onChange={(e) => setTitle(e.target.value)}
+                              value={stateContact.title}
+                              onChange={(e) => setContactField("title",e.target.value)}
                               fullWidth
                               required
                               slotProps={{ inputLabel: { shrink: true } }}
@@ -309,8 +170,8 @@ export default function DevelopmentForm() {
                             <TextField
                               variant="outlined"
                               label="Website"
-                              value={website}
-                              onChange={(e) => setWebsite(e.target.value)}
+                              value={stateContact.website}
+                              onChange={(e) => setContactField("website",e.target.value)}
                               fullWidth
                               slotProps={{ inputLabel: { shrink: true } }}
                             />
@@ -320,55 +181,55 @@ export default function DevelopmentForm() {
                         <TextField
                           variant="outlined"
                           label="Phone"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          value={stateContact.phone}
+                          onChange={(e) => setContactField("phone",e.target.value)}
                           fullWidth
                           slotProps={{ inputLabel: { shrink: true } }}
                         />
                         <TextField
                           variant="outlined"
                           label="Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          value={stateContact.email}
+                          onChange={(e) => setContactField("email",e.target.value)}
                           fullWidth
                           slotProps={{ inputLabel: { shrink: true } }}
                         />
                         <TextField
                           label="Street"
                           variant="outlined"
-                          value={street}
-                          onChange={(e) => setStreet(e.target.value)}
+                          value={stateContact.street}
+                          onChange={(e) => setContactField("street",e.target.value)}
                           fullWidth
                           slotProps={{ inputLabel: { shrink: true } }}
                         />
                         <TextField
                           label="City"
                           variant="outlined"
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
+                          value={stateContact.city}
+                          onChange={(e) => setContactField("city",e.target.value)}
                           fullWidth
                           slotProps={{ inputLabel: { shrink: true } }}
                         />
                         <TextField
                           label="State"
                           variant="outlined"
-                          value={state}
-                          onChange={(e) => setState(e.target.value)}
+                          value={stateContact.state}
+                          onChange={(e) => setContactField("state",e.target.value)}
                           fullWidth
                           slotProps={{ inputLabel: { shrink: true } }}
                         />
                         <TextField
                           label="Zip Code"
                           variant="outlined"
-                          value={zipCode}
-                          onChange={(e) => setZipCode(e.target.value)}
+                          value={stateContact.zipCode}
+                          onChange={(e) => setContactField("zipCode",e.target.value)}
                           fullWidth
                           slotProps={{ inputLabel: { shrink: true } }}
                         />
                       </Box>
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={handleClose}>Cancel</Button>
+                      <Button onClick={() => setField("open", !state.open)}>Cancel</Button>
                       <Button type="submit">Submit</Button>
                     </DialogActions>
                   </Box>
@@ -379,8 +240,8 @@ export default function DevelopmentForm() {
                 <TextField
                   label="Street"
                   variant="outlined"
-                  value={street}
-                  onChange={(e) => setStreet(e.target.value)}
+                  value={state.street}
+                  onChange={(e) => setField("street",e.target.value)}
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
@@ -389,8 +250,8 @@ export default function DevelopmentForm() {
                 <TextField
                   label="City"
                   variant="outlined"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  value={state.city}
+                  onChange={(e) => setField("city",e.target.value)}
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
@@ -399,8 +260,8 @@ export default function DevelopmentForm() {
                 <TextField
                   label="State"
                   variant="outlined"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  value={state.state}
+                  onChange={(e) => setField("state",e.target.value)}
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
@@ -409,8 +270,8 @@ export default function DevelopmentForm() {
                 <TextField
                   label="Zip Code"
                   variant="outlined"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
+                  value={state.zipCode}
+                  onChange={(e) => setField("zipCode",e.target.value)}
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
@@ -422,8 +283,8 @@ export default function DevelopmentForm() {
                   multiline
                   rows={3}
                   variant="outlined"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
+                  value={state.note}
+                  onChange={(e) => setField("note",e.target.value)}
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
@@ -434,44 +295,44 @@ export default function DevelopmentForm() {
                   type="date"
                   variant="outlined"
                   pattern="\d{2}-\d{2}-\d{4}"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  value={state.date}
+                  onChange={(e) => setField("date",e.target.value)}
                   fullWidth
                   required
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
               </Grid>
-              <Grid size={{ xs: 3, sm: 3, md: 3, lg: 1 }}>
+              <Grid size={{ xs: 3, sm: 3, md: 3, lg: 1.3 }}>
                 <TextField
                   label="Time"
                   type="time"
                   variant="outlined"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  value={state.time}
+                  onChange={(e) => setField("time",e.target.value)}
                   fullWidth
                   required
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
               </Grid>
-              <Grid size={{ xs: 3, sm: 3, md: 3, lg: 1 }}>
+              <Grid size={{ xs: 3, sm: 3, md: 3, lg: 1.3 }}>
                 <TextField
                   label="End Time"
                   type="time"
                   variant="outlined"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
+                  value={state.endTime}
+                  onChange={(e) => setField("endTime",e.target.value)}
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
               </Grid>
-              <Grid size={{ xs: 5, sm: 4, md: 4, lg: 1.5 }}>
+              <Grid size={{ xs: 5, sm: 4, md: 4, lg: 1.7 }}>
                 <FormControl fullWidth>
                   <InputLabel id="development-status">Status</InputLabel>
                   <Select
                     labelId="development-status"
                     label="Status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                    value={state.status}
+                    onChange={(e) => setField("status",e.target.value)}
                     fullWidth
                     required
                     >
