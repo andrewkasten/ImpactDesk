@@ -8,6 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN chmod +x entrypoint.sh
-
-CMD ["./entrypoint.sh"]
+CMD gunicorn --bind 0.0.0.0:8000 --workers 3 config.wsgi:application
