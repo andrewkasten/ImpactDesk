@@ -18,7 +18,7 @@ export default function TablePeople() {
   const { handleContactDelete, people} = useContactForm();
   const theme = useTheme();
   const color = colors(theme.palette.mode);
-
+ 
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 4, p: 1 }}>
       <Typography sx={{ pl: 1 }} variant="subtitle">
@@ -74,7 +74,7 @@ export default function TablePeople() {
                 ${person.donation_total}
               </TableCell>
               <TableCell>
-                <IconButton onClick={() => handleContactDelete(person.id)}>
+                <IconButton onClick={() => handleContactDelete(person.id, "Person")}>
                   <DeleteOutlineIcon sx={{ color: `${color.error[400]}` }} />
                 </IconButton>
               </TableCell>

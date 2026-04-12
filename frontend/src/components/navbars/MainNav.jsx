@@ -15,6 +15,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { ColorModeContext } from "../../../theme";
 import AuthContext from "../../contexts/AuthContext"
 import { fetcher } from "../../api/fetcher"
+import { API_BASE } from "../../api/config";
 
 const settings = [
   { name: "Profile", id: "" },
@@ -34,7 +35,7 @@ export default function MainNav() {
   const handleOpenUserMenu = (event) => {
     setMenuPosition(event.currentTarget)
   };
-  
+
   const handleCloseUserMenu = () => {
     setMenuPosition(null);
   };

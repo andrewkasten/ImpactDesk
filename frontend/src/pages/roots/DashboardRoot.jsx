@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {ThemeProvider} from "@mui/material/styles";
 import {ColorModeContext, useMode} from '../../../theme'
 import AuthContext from "../../contexts/AuthContext";
+import { useContext } from "react";
 
 
 function DashboardLayout() {

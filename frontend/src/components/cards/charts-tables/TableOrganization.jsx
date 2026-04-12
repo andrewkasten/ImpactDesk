@@ -11,10 +11,12 @@ import { API_BASE } from "../../../api/config"
 import Typography from '@mui/material/Typography';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
+import { useContext } from "react";
+import AuthContext from "../../../contexts/AuthContext";
 
 export default function TableOrganization() {
-  
-  const { data: organization} = useSWR(`${API_BASE}/api/organizations/`, fetcher)
+  const { userToken } = useContext(AuthContext);
+  const { data: organization} = useSWR(userToken ? [`${API_BASE}/api/organizations/`, userToken] : null, fetcher)
 
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 4, p:1}}>

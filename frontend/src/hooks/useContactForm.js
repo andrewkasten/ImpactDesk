@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { fetcher } from "../api/fetcher";
 import { API_BASE } from "../api/config";
 import AuthContext from "../contexts/AuthContext";
+import { useContext } from "react";
 
 const initialState = {
   firstName: "",
@@ -37,12 +38,12 @@ export default function useContactForm() {
   const { userToken } = useContext(AuthContext);
 
   const { data: people, mutate: refreshPeople } = useSWR(
-    userToken ? `${API_BASE}/api/people/` : null,
+    userToken ? [`${API_BASE}/api/people/`, userToken] : null,
    fetcher,
  );
 
  const { data: organization, mutate: refreshOrganization } = useSWR(
-  userToken ? `${API_BASE}/api/organizations/` : null,
+  userToken ? [`${API_BASE}/api/organizations/`, userToken] : null,
    fetcher,
  );
 
@@ -116,8 +117,9 @@ export default function useContactForm() {
     }
   };
 
-  const handleContactDelete = async (id, selectType) => {
-    await axios.delete(`${API_BASE}/api/${selectType}/${id}`, { headers: {
+  const handleContactDelete = async (id, selectTypeContact) => {
+    const endpoint = selectTypeContact === "Person" ? "people" : "organizations";
+    await axios.delete(`${API_BASE}/api/${endpoint}/${id}`, { headers: {
       Authorization: `Token ${userToken}`,
     }});
     await refreshPeople();

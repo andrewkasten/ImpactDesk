@@ -14,7 +14,7 @@ const initialState = {
   date: dayjs().format("YYYY-MM-DD"),
   time: "",
   endTime: "",
-  status: "Pending",
+  status: "pending",
   note: "",
   street: "",
   city: "",
@@ -26,6 +26,7 @@ const initialState = {
   lng: 0,
   selectTypeContact: "",
   open: false,
+  editId: null,
 };
 
 function developmentReducer(stateDev, action) {
@@ -73,7 +74,9 @@ export default function useDevelopmentForm() {
         lng: dev.lng,
         peopleID: dev.people || "",
         organizationID: dev.organization || "",
+        selectTypeContact: dev.people ? "Person" : "Organization",
         open: true,
+        editId: dev.id,
       },
     });
   };
@@ -100,8 +103,8 @@ const geocode = async () => {
  const buildDevelopmentObject = () => ({
    type: stateDev.type,
    date: stateDev.date,
-   time: stateDev.time,
-   end_time: stateDev.endTime,
+   time: stateDev.time || null,
+   end_time: stateDev.endTime || null,
    status: stateDev.status,
    note: stateDev.note,
    street: stateDev.street,
