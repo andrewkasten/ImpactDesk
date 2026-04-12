@@ -17,7 +17,7 @@ class Developments(models.Model):
     date =  models.DateField(default=date.today)
     time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
-    status = models.CharField( max_length=10, default="Scheduled", choices = STATUS_CHOICES)   
+    status = models.CharField( max_length=10, default="scheduled", choices = STATUS_CHOICES)   
     note = models.TextField(blank=True)
     street = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
