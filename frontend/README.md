@@ -1,16 +1,17 @@
-# React + Vite
+# React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Why React Leafet Markers Disappear in Production
+ 
+Leaflet expects these images to be in a specific location relative to the Leaflet library files. When you install Leaflet via npm/yarn, these images live in:
 
-Currently, two official plugins are available:
+```
+node_modules/leaflet/dist/images/  
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- In development, files often served directly from node modules
 
-## React Compiler
+## Solution
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- file location: node_modules/leaflet/dist/images/marker-icon.png
+- copy images directly to public/leafleft-images/
+- add L.Icon.Default.imagePath = '/leaflet-images/';  
