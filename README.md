@@ -13,8 +13,7 @@ Unlike generic CRM systems, ImpactDesk is built specifically for in-person donor
 ## Getting Started
 
 1. Clone the repository and create a `.env` file with the required environment variables:
-
-   ```
+  ```
    DJANGO_KEY=<your-django-secret-key>
    DEBUG=True
    DB_NAME=impactdesk
@@ -22,16 +21,12 @@ Unlike generic CRM systems, ImpactDesk is built specifically for in-person donor
    DB_PASS=<db-password>
    VITE_BASE_URL=http://localhost:8000
    VITE_GEOCODE_KEY=<your-google-geocode-api-key>
-   ```
-
+  ```
 2. Start the application with Docker Compose:
-
-   ```bash
-   bash run-compose-dev.sh
-   ```
-
+  ```bash
+   ./run-compose-dev.sh
+  ```
    This brings up three services: the PostgreSQL database, Django API server (port 8000), and Vite dev server (port 5173).
-
 3. Open the app at `http://localhost:5173`.
 
 ## Features
@@ -45,28 +40,32 @@ Unlike generic CRM systems, ImpactDesk is built specifically for in-person donor
 
 ## Data Model
 
-| Model         | Key Fields                                                                 | Relationships                              |
-|---------------|----------------------------------------------------------------------------|--------------------------------------------|
-| **People**        | first_name, last_name, phone, email, address fields                        | Has many Donations, has many Developments  |
-| **Organizations** | title, website, phone, email, address fields                               | Has many Donations, has many Developments  |
-| **Donations**     | donations (amount), donate_type, date                                      | ForeignKey to People, ForeignKey to Organizations |
-| **Developments**  | type, date, time, end_time, status, note, address fields, lat, lng         | ForeignKey to People, ForeignKey to Organizations |
+
+| Model             | Key Fields                                                         | Relationships                                     |
+| ----------------- | ------------------------------------------------------------------ | ------------------------------------------------- |
+| **People**        | first_name, last_name, phone, email, address fields                | Has many Donations, has many Developments         |
+| **Organizations** | title, website, phone, email, address fields                       | Has many Donations, has many Developments         |
+| **Donations**     | donations (amount), donate_type, date                              | ForeignKey to People, ForeignKey to Organizations |
+| **Developments**  | type, date, time, end_time, status, note, address fields, lat, lng | ForeignKey to People, ForeignKey to Organizations |
+
 
 ## API Endpoints
 
-| Endpoint                      | Methods           | Description                          |
-|-------------------------------|-------------------|--------------------------------------|
-| `/auth/signup`                | POST              | Create a new user account            |
-| `/auth/get-token`             | POST              | Obtain auth token with credentials   |
-| `/auth/users`                 | GET               | Get authenticated user profile       |
-| `/api/people/`                | GET, POST         | List or create contacts              |
-| `/api/people/<id>`            | GET, PUT, DELETE   | Retrieve, update, or delete a contact |
-| `/api/organizations/`         | GET, POST         | List or create organizations         |
-| `/api/organizations/<id>`     | GET, PUT, DELETE   | Retrieve, update, or delete an org   |
-| `/api/donations/`             | GET, POST         | List or create donations             |
-| `/api/donations/<id>`         | GET, PUT, DELETE   | Retrieve, update, or delete a donation |
-| `/api/developments/`          | GET, POST         | List or create developments (supports `?date=` filter) |
-| `/api/developments/<id>`      | GET, PUT, DELETE   | Retrieve, update, or delete a development |
+
+| Endpoint                  | Methods          | Description                                            |
+| ------------------------- | ---------------- | ------------------------------------------------------ |
+| `/auth/signup`            | POST             | Create a new user account                              |
+| `/auth/get-token`         | POST             | Obtain auth token with credentials                     |
+| `/auth/users`             | GET              | Get authenticated user profile                         |
+| `/api/people/`            | GET, POST        | List or create contacts                                |
+| `/api/people/<id>`        | GET, PUT, DELETE | Retrieve, update, or delete a contact                  |
+| `/api/organizations/`     | GET, POST        | List or create organizations                           |
+| `/api/organizations/<id>` | GET, PUT, DELETE | Retrieve, update, or delete an org                     |
+| `/api/donations/`         | GET, POST        | List or create donations                               |
+| `/api/donations/<id>`     | GET, PUT, DELETE | Retrieve, update, or delete a donation                 |
+| `/api/developments/`      | GET, POST        | List or create developments (supports `?date=` filter) |
+| `/api/developments/<id>`  | GET, PUT, DELETE | Retrieve, update, or delete a development              |
+
 
 ## Grading Rubric Coverage
 
@@ -107,3 +106,4 @@ Additional CRUD resources (Donations and Developments) are also implemented with
 - **Dashboard analytics** -- Bar charts showing donations by month (MUI X-Charts), top donor rankings, and today's development count.
 - **Inline contact creation** -- Dialog within the development form to create a new person or organization without leaving the page.
 - **Donation aggregation** -- Per-person donation totals calculated at the serializer level and displayed in the contacts table.
+
