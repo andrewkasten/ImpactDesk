@@ -7,14 +7,15 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import useSWR from 'swr'
 import {fetcher} from "../../../api/fetcher"
+import { API_BASE } from "../../../api/config"
 import Typography from '@mui/material/Typography';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
 
 export default function TableOrganization() {
   
-  const { data: organization} = useSWR("http://localhost:8000/api/organizations/", fetcher)
-  // console.log(people)
+  const { data: organization} = useSWR(`${API_BASE}/api/organizations/`, fetcher)
+
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 4, p:1}}>
       <Table  size="small" aria-label="a table of organization contacts">

@@ -7,16 +7,21 @@ import dayjs from "dayjs";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../../../../theme";
 import {fetcher} from "../../../api/fetcher.js"
+import { API_BASE } from "../../../api/config";
+import { useContext } from "react";
+import AuthContext from "../../../contexts/AuthContext";
 
 export default function DevelopToday() {
   const today = dayjs();
   const theme = useTheme();
   const color = colors(theme.palette.mode);
+  const { userToken } = useContext(AuthContext);
 
   const { data: developments } = useSWR(
-    `http://localhost:8000/api/developments/?date=${today.format("YYYY-MM-DD")}`, fetcher,
+    userToken ? [`${API_BASE}/api/developments/?date=${today.format("YYYY-MM-DD")}`, userToken] : null, fetcher,
   );
-  // console.log(developments)
+
+
   return (
     <Card elevation={1} sx={{ borderRadius: 4, mb: 2 }}>
       <CardContent>

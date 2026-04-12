@@ -6,13 +6,16 @@ import Stack from "@mui/material/Stack";
 import Map from "../../components/cards/maps/Map.jsx";
 import ListDevelopments from "../../components/cards/lists/ListDevelopments.jsx";
 import DevelopmentForm from "../../components/cards/forms/DevelopmentForm.jsx";
-import { useState} from "react"
+import { useState, useContext} from "react"
 import dayjs from "dayjs"; //day.js.org
 import useSWR from "swr"
 import DevelopmentsContext from "../../contexts/DevelopmentsContext";
+import AuthContext from "../../contexts/AuthContext";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import {fetcher} from "../../api/fetcher.js"
+import { API_BASE } from "../../api/config"
+
 // get date, get List with filter, address to lat lng, with validation, fromAddress()
 
 
@@ -21,12 +24,12 @@ export default function Developments() {
   const today = dayjs()
   const [selectedWeek, setSelectedWeek] = useState(firstWeekDay)
   const [selectedDay, setSelectedDay] = useState(today)
-  const token = localStorage.getItem("token")
+  const { userToken } = useContext(AuthContext)
 
   //mutate(key) (or just mutate() with the bound mutate API) with no data will trigger a revalidation 
   const { data: developments, mutate: refreshDevelopments} = useSWR(
-    token ? `http://localhost:8000/api/developments/?date=${selectedDay.format("YYYY-MM-DD")}` : null,
-    fetcher,    
+    userToken ? [`${API_BASE}/api/developments/?date=${selectedDay.format("YYYY-MM-DD")}`, userToken] : null,
+    fetcher,
   )
   const developmentsList = Array.isArray(developments) ? developments : []
  

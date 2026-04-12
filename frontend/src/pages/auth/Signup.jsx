@@ -39,20 +39,14 @@ export default function Signup() {
       password: formData.password,
     };
     const response = await signup(context);
-      console.log('response',response.first_name)
-      if (!response.first_name) {
+    if (!response || !response.first_name) {
         setShouldRedirect(false)
         setResponseMsg(response)
-        console.log('msg',responseMsg.username)
       } else {
         setResponseMsg(response)
         setSignupSuccess(true)
         setTimeout(() => setShouldRedirect(true), 1500)
-      
-       
-      }
-    console.log(shouldRedirect)
-   
+      }   
   };
  
   if (shouldRedirect) {
@@ -72,13 +66,10 @@ export default function Signup() {
             minHeight: "100vh",
             backgroundSize: "100%",
             backgroundPosition: "center 43%",
-            textAlign: "center",
-            backgroundSize: "cover",
+            textAlign: "center",         
             backgroundRepeat: { xs: "repeat", md: "no-repeat" },
           }}
         >
-         
-
           <Container direction="column" justifyContent="space-between">
           <Box sx={{pb:5}}>
           <img width="360px" src={idMonogram}/>
@@ -95,15 +86,12 @@ export default function Signup() {
                 boxShadow: 3,
                 
                }}
-            >
-             
-            
+            >            
               <Typography
                 component="h1"
                 variant="h4"
                 sx={{ width: "100%", pt:3, fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
               >
-
                 Signup
               </Typography>
               <Box

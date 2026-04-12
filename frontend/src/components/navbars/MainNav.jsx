@@ -13,6 +13,8 @@ import useSWR from "swr";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { ColorModeContext } from "../../../theme";
+import AuthContext from "../../contexts/AuthContext"
+import { fetcher } from "../../api/fetcher"
 
 const settings = [
   { name: "Profile", id: "" },
@@ -23,19 +25,16 @@ export default function MainNav() {
   const [menuPosition, setMenuPosition] = useState(null);
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
+  const { userToken } = useContext(AuthContext)
 
-  const fetcher = (url) =>
-    fetch(url, {
-      headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => res.json());
-
-  const { data: users } = useSWR("http://localhost:8000/auth/users", fetcher);
+  
+  const { data: users } = useSWR(
+    userToken ? [`${API_BASE}/auth/users`, userToken] : null, fetcher
+  )
   const handleOpenUserMenu = (event) => {
-    setMenuPosition(event.currentTarget);
+    setMenuPosition(event.currentTarget)
   };
-
+  
   const handleCloseUserMenu = () => {
     setMenuPosition(null);
   };

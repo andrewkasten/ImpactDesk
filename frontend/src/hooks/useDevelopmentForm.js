@@ -1,10 +1,10 @@
 import { useReducer, useContext } from "react";
 import axios from "axios";
 import { setKey, fromAddress, setLocationType } from "react-geocode";
-import useSWR from "swr";
 import DevelopmentsContext from "../contexts/DevelopmentsContext";
+import AuthContext from "../contexts/AuthContext";
 import dayjs from "dayjs";
-import { fetcher } from "../api/fetcher";
+import { API_BASE } from "../api/config";
 
 setKey(import.meta.env.VITE_GEOCODE_KEY);
 setLocationType("ROOFTOP");
@@ -43,6 +43,7 @@ function developmentReducer(stateDev, action) {
 
 export default function useDevelopmentForm() {
   const [stateDev, dispatch] = useReducer(developmentReducer, initialState);
+  const { userToken } = useContext(AuthContext);
 
   // Get
   const { refreshDevelopments: refresh } = useContext(DevelopmentsContext);
@@ -119,8 +120,8 @@ const geocode = async () => {
    const coords = await geocode();
    obj.lat = coords.lat;
    obj.lng = coords.lng;
-   await axios.post("http://localhost:8000/api/developments/", obj, { headers: {
-      Authorization: `Token ${localStorage.getItem("token")}`,
+   await axios.post(`${API_BASE}/api/developments/`, obj, { headers: {
+    Authorization: `Token ${userToken}`,
     }});
    dispatch({ type: "RESET" });
    await refresh();
@@ -133,8 +134,8 @@ const geocode = async () => {
    const coords = await geocode();
    obj.lat = coords.lat;
    obj.lng = coords.lng;
-   await axios.put(`http://localhost:8000/api/developments/${id}`, obj, { headers: {
-      Authorization: `Token ${localStorage.getItem("token")}`,
+   await axios.put(`${API_BASE}/api/developments/${id}`, obj, { headers: {
+    Authorization: `Token ${userToken}`,
     }});
    setField("open", false);
    await refresh();
@@ -142,8 +143,8 @@ const geocode = async () => {
 
  // Delete
  const handleDelete = async (id) => {
-   await axios.delete(`http://localhost:8000/api/developments/${id}`, { headers: {
-      Authorization: `Token ${localStorage.getItem("token")}`,
+   await axios.delete(`${API_BASE}/api/developments/${id}`, { headers: {
+    Authorization: `Token ${userToken}`,
     }});
    await refresh();
  };

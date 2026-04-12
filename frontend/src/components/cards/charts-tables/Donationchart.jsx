@@ -1,74 +1,91 @@
-import { BarChart } from '@mui/x-charts/BarChart'
+import { BarChart } from "@mui/x-charts/BarChart";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import useSWR from "swr";
 import { useTheme } from "@mui/material/styles";
-import {colors} from "../../../../theme"
-import {fetcher} from "../../../api/fetcher"
+import { colors } from "../../../../theme";
+import { fetcher } from "../../../api/fetcher";
+import { API_BASE } from "../../../api/config";
+import AuthContext from "../../../contexts/AuthContext"
 
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov', 'Dec',
-]
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 export default function DonationChart() {
   const theme = useTheme();
   const color = colors(theme.palette.mode);
-
+  const { userToken } = useContext(AuthContext);
 
   const { data: donations } = useSWR(
-    "http://localhost:8000/api/donations/", fetcher)
+    userToken ? [`${API_BASE}/api/donations/`, userToken] : null, fetcher)
 
-// console.log(donations)
+  let donationsByMonth = {
+    "01": 0,
+    "02": 0,
+    "03": 0,
+    "04": 0,
+    "05": 0,
+    "06": 0,
+    "07": 0,
+    "08": 0,
+    "09": 0,
+    10: 0,
+    11: 0,
+    12: 0,
+  };
 
-let donationsByMonth = {
-  "01": 0,
-  "02": 0,
-  "03": 0,
-  "04": 0,
-  "05": 0,
-  "06": 0,
-  "07": 0,
-  "08": 0,
-  "09": 0,
-  "10": 0,
-  "11": 0,
-  "12": 0,
-}
+  let month = [];
+  let amount = [];
 
-let month = []
-let amount = []
+  function amountMonth() {
+    {
+      donations?.map(
+        (donation) => (
+          (month = donation.date.split("-")[1]),
+          (donationsByMonth[month] += Number(donation.donations))
+        ),
+      );
+    }
 
-function amountMonth(){
-{donations?.map((donation) => (
-  month = donation.date.split('-')[1],
-  donationsByMonth[month] += Number(donation.donations)
-))}
-
-for (let [key, value] of Object.entries(donationsByMonth)) {
-      amount.push(value)      
+    for (let [value] of Object.entries(donationsByMonth)) {
+      amount.push(value);
+    }
+    return amount;
   }
-return amount
-}
-amountMonth()
+  amountMonth();
 
-return (
-   <Card elevation={2} sx={{ borderRadius: 4, pb:2}}>
-        <CardContent>
-    <Box sx={{ width: '100%', height: 300 }}>
-      <Typography variant="subtitle"  >
-        Donations
-      </Typography>     
-      <BarChart
-        series={[
-          { data: amount, label: `Total Monthly`, color: `${color.secondary[600]}` },
-        ]}
-        xAxis={[{ data: months, height: 28}]}
-        yAxis={[{ width: 50 }]}
-      />
-    </Box>
-    </CardContent>
+  return (
+    <Card elevation={2} sx={{ borderRadius: 4, pb: 2 }}>
+      <CardContent>
+        <Box sx={{ width: "100%", height: 300 }}>
+          <Typography variant="subtitle">Donations</Typography>
+          <BarChart
+            series={[
+              {
+                data: amount,
+                label: `Total Monthly`,
+                color: `${color.secondary[600]}`,
+              },
+            ]}
+            xAxis={[{ data: months, height: 28 }]}
+            yAxis={[{ width: 50 }]}
+          />
+        </Box>
+      </CardContent>
     </Card>
-  )
+  );
 }

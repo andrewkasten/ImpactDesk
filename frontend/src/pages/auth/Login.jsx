@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { login } from "../../api/authApi";
 import { Navigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
@@ -11,18 +11,16 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import Container from "@mui/material/Container";
 import idMonogram from '../../assets/id-Monogram.png'
+import Alert from '@mui/material/Alert';
+import AuthContext from "../../contexts/AuthContext";
+
 
 export default function Login({}) {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [responseMsg, setResponseMsg] = useState("");
   const [shouldRedirect, setShouldRedirect] = useState(false);
-  const [userToken, setUserToken] = useState(null);
+  const { handleToken } = useContext(AuthContext);
 
-  const handleToken = (token) => {
-    setFormData({ username: "", password: "" });
-    setUserToken(token);
-    localStorage.setItem("token", token);
-  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -42,8 +40,8 @@ export default function Login({}) {
       setResponseMsg("Error logging in");
     } else {
       handleToken(token);
+      setFormData({ username: "", password: "" });
       setShouldRedirect(true);
-      localStorage.setItem("token", token);
     }
   };
   if (shouldRedirect) {
@@ -57,14 +55,12 @@ export default function Login({}) {
             alignItems: "center",
             bgcolor: "grey.600",
             backgroundBlendMode: "multiply", 
-            // image distracting with 3D rectangles, change to one without them
+            // image loading slow
           backgroundImage: `url(https://lh3.googleusercontent.com/pw/AP1GczMmeE7IsdjaDjubQh55oqnwygGnyV1lr86MdXcH4MNP-LiyFSHZouo-oNQOsCRgm5iVV6JNzqwoDitFl7xMCaMb0sPwKlok2RHDUeWkLLdDvAd59_0=w2400)`,
             textAlign: "center",
             minHeight: "100vh",
             backgroundSize: "100%",
-            backgroundPosition: "center 43%",
-            textAlign: "center",           
-            backgroundSize: "cover",           
+            backgroundPosition: "center 43%",                     
             backgroundRepeat: { xs: "repeat", md: "no-repeat" },
           }}
         >
@@ -123,6 +119,7 @@ export default function Login({}) {
               </Box>
             </CardContent>
           </Card>
+          {shouldRedirect === false && <Alert sx={{mt:3}} variant="filled" severity="error">{responseMsg.username}</Alert>}
           </Container>
         </Stack>
       </>

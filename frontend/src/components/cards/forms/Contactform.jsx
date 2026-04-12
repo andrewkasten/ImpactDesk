@@ -9,10 +9,8 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-import useContactForm from "../../../hooks/useContactForm";
 
 export default function ContactForm() {
-  const { stateContact, setContactField, handleContactSubmit,} = useContactForm();
 
   return (
     <Card elevation={2} sx={{ borderRadius: 4 }}>

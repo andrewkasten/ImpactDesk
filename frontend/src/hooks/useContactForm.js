@@ -2,6 +2,8 @@ import { useReducer } from "react";
 import axios from "axios";
 import useSWR from "swr";
 import { fetcher } from "../api/fetcher";
+import { API_BASE } from "../api/config";
+import AuthContext from "../contexts/AuthContext";
 
 const initialState = {
   firstName: "",
@@ -32,15 +34,15 @@ function contactsReducer(stateContact, action) {
 
 export default function useContactForm() {
   const [stateContact, dispatch] = useReducer(contactsReducer, initialState);
-  const token = localStorage.getItem("token");
+  const { userToken } = useContext(AuthContext);
 
   const { data: people, mutate: refreshPeople } = useSWR(
-   token ? "http://localhost:8000/api/people/" : null,
+    userToken ? `${API_BASE}/api/people/` : null,
    fetcher,
  );
 
  const { data: organization, mutate: refreshOrganization } = useSWR(
-   token ? "http://localhost:8000/api/organizations/" : null,
+  userToken ? `${API_BASE}/api/organizations/` : null,
    fetcher,
  );
 
@@ -92,10 +94,10 @@ export default function useContactForm() {
     const obj = buildPeopleObject();
     if (stateContact.selectTypeContact === "Person") {
       await axios.post(
-        "http://localhost:8000/api/people/",
+        `${API_BASE}/api/people/`,
         obj,
         { headers: {
-         Authorization: `Token ${localStorage.getItem("token")}`,
+          Authorization: `Token ${userToken}`,
        }},
       );
       await refreshPeople();
@@ -104,10 +106,10 @@ export default function useContactForm() {
     if (stateContact.selectTypeContact === "Organization") {
       const obj = buildOrganizationObject();
       await axios.post(
-        "http://localhost:8000/api/organizations/",
+        `${API_BASE}/api/organizations/`,
         obj,
         { headers: {
-         Authorization: `Token ${localStorage.getItem("token")}`,
+          Authorization: `Token ${userToken}`,
        }},
       );
       await refreshOrganization()
@@ -115,8 +117,8 @@ export default function useContactForm() {
   };
 
   const handleContactDelete = async (id, selectType) => {
-    await axios.delete(`http://localhost:8000/api/${selectType}/${id}`, { headers: {
-      Authorization: `Token ${localStorage.getItem("token")}`,
+    await axios.delete(`${API_BASE}/api/${selectType}/${id}`, { headers: {
+      Authorization: `Token ${userToken}`,
     }});
     await refreshPeople();
     await refreshOrganization();

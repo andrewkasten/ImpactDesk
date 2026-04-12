@@ -6,13 +6,18 @@ import { useTheme } from "@mui/material/styles";
 import { colors } from "../../../../theme";
 import { fetcher } from "../../../api/fetcher";
 import useSWR from "swr";
+import { API_BASE } from "../../../api/config";
+import { useContext } from "react";
+import AuthContext from "../../../contexts/AuthContext";
 
 export default function TotalDonations() {
   const theme = useTheme();
   const color = colors(theme.palette.mode);
 
+  const { userToken } = useContext(AuthContext);
+
   const { data: donations } = useSWR(
-    "http://localhost:8000/api/donations/",
+    userToken ? [`${API_BASE}/api/donations/`, userToken] : null,
     fetcher,
   );
 

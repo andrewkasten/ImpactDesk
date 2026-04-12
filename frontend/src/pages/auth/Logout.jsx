@@ -1,14 +1,14 @@
 import { Navigate } from "react-router-dom";
-import { useState } from 'react'
+import { useContext } from 'react'
+import AuthContext from "../../contexts/AuthContext";
 
 export default function Logout() {
-  const [userToken, setUserToken] = useState(localStorage.getItem('token'))
+  const { userToken, logout } = useContext(AuthContext);
 
 
   const handleLogout = (e) => {
     e.preventDefault();
-    setUserToken(null);
-    localStorage.removeItem('token')
+    logout();
   };
 
   if (!userToken) {
