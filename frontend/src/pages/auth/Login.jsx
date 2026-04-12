@@ -18,7 +18,7 @@ import AuthContext from "../../contexts/AuthContext";
 export default function Login({}) {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [responseMsg, setResponseMsg] = useState("");
-  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [shouldRedirect, setShouldRedirect] = useState(null);
   const { handleToken } = useContext(AuthContext);
 
   const handleInputChange = (e) => {
@@ -37,7 +37,8 @@ export default function Login({}) {
     };
     const token = await login(context);
     if (!token) {
-      setResponseMsg("Error logging in");
+      setResponseMsg("Unable to log in with provided credentials.");
+      setShouldRedirect(false);
     } else {
       handleToken(token);
       setFormData({ username: "", password: "" });
@@ -119,7 +120,7 @@ export default function Login({}) {
               </Box>
             </CardContent>
           </Card>
-          {shouldRedirect === false && <Alert sx={{mt:3}} variant="filled" severity="error">{responseMsg.username}</Alert>}
+          {shouldRedirect === false && <Alert sx={{mt:3}} variant="filled" severity="error">{responseMsg}</Alert>}
           </Container>
         </Stack>
       </>
