@@ -11,12 +11,14 @@ import { pages } from "../../assets/linksData"
 
 
 
-function Sidenav() {
+export default function Sidenav() {
   const theme = useTheme();
   const location = useLocation();
   const pathname = location.pathname;
   const [collapse, setCollapse] = useState(false);
 
+
+    console.log(pages)
   const handleCollapseMenu = () => {
     setCollapse(!collapse);
   };
@@ -56,7 +58,7 @@ function Sidenav() {
           </MenuItem>
         </Menu>
         <Menu subHeading="DETAILS">
-          {pages.map((page) => (
+          {pages.filter((page) => page.id != "/dashboard").map((page) => (
             <MenuItem
               isSelected={pathname === page.id}
               link={page.id}
@@ -72,4 +74,3 @@ function Sidenav() {
   );
 }
 
-export default Sidenav;

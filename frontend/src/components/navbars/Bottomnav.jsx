@@ -1,12 +1,10 @@
 import BottomNavigation from "@mui/material/BottomNavigation";
 import Box from "@mui/material/Box";
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { pages } from "../../assets/linksData"
-
+import { pages } from "../../assets/linksData";
 
 export default function Bottomnav() {
   const [value, setValue] = useState("");
@@ -17,20 +15,11 @@ export default function Bottomnav() {
 
   return (
     <Box sx={{ pb: 7 }}>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1100 }} elevation={3}>
-        <BottomNavigation
-          showLabels
-          value={value}
-          onChange={handleChange}
-        >
-          <BottomNavigationAction              
-              sx={{ minWidth: 0 }}
-              label="Dashboard"
-              value="Dashboard"
-              to="/dashboard"
-              component={Link}
-              icon={<DashboardOutlinedIcon />}
-            />
+      <Paper
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}
+        elevation={3}>
+        <BottomNavigation showLabels value={value} onChange={handleChange}>
+         
           {pages.map((page) => (
             <BottomNavigationAction
               key={page.id}
