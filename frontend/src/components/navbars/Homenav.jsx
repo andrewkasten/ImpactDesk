@@ -15,7 +15,7 @@ import idLogo from "../../assets/id-logo.png";
 
 const links = [
   { name: "Home", id: "/" },
-  { name: "Features", id: "/dashboard" },
+  { name: "Features", id: "#features" },
   { name: "About Us", id: "/aboutus" },
   { name: "Contact", id: "/contact" },
 ];
@@ -105,18 +105,26 @@ export default function Homenav() {
                 horizontal: "center",
               }}>
               <Box sx={{ p: 1 }}>
-                <MenuItem>Home</MenuItem>
-                <MenuItem>Features</MenuItem>
-                <MenuItem>About Us</MenuItem>
-                <MenuItem>Contact</MenuItem>
+              {links.map((page) => (
+                 <MenuItem>
+             <Button
+             to={page.id}
+             as={Link}
+             variant="text"
+             size="small"
+             sx={{p:0, textDecoration: "none", color: "inherit"  }}>
+             {page.name}
+           </Button>
+           </MenuItem>
+            ))}
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
-                  <Button to="/signup" as={Link} variant="contained" fullWidth>
+                  <Button to="/signup" as={Link} variant="contained" fullWidth sx={{ textDecoration: "none" }}>
                     Sign up
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Button to="/login" as={Link} variant="outlined" fullWidth>
+                  <Button to="/login" as={Link} variant="outlined" fullWidth sx={{ textDecoration: "none" }}>
                     Login
                   </Button>
                 </MenuItem>
