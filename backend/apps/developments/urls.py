@@ -6,3 +6,8 @@ urlpatterns = [
     path('', DevelopmentsView.as_view()),
     path('<int:pk>', SingleDevelopmentView.as_view()),
 ]
+
+
+
+
+
