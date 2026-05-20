@@ -1,4 +1,4 @@
-import { useReducer, useContext } from "react";
+import { useReducer, useContext, useState } from "react";
 import axios from "axios";
 import { setKey, fromAddress, setLocationType } from "react-geocode";
 import DevelopmentsContext from "../contexts/DevelopmentsContext";
@@ -44,10 +44,13 @@ function developmentReducer(stateDev, action) {
 
 export default function useDevelopmentForm() {
   const [stateDev, dispatch] = useReducer(developmentReducer, initialState);
+  const [formError, setFormError] = useState(null);
   const { userToken } = useContext(AuthContext);
 
   // Get
   const { refreshDevelopments: refresh } = useContext(DevelopmentsContext);
+
+  const clearFormError = () => setFormError(null);
  
 
   // update any field
@@ -84,19 +87,22 @@ export default function useDevelopmentForm() {
 
 
 const geocode = async () => {
-   const address = `${stateDev.street} ${stateDev.city} ${stateDev.state} ${stateDev.zipCode}`;
-   if (stateDev.zipCode) {
-     try {
-       const { results } = await fromAddress(address);
-       const { lat, lng } = results[0].geometry.location;
-       setField("lat", lat);
-       setField("lng", lng);
-       return { lat, lng };
-     } catch (error) {
-       console.error(error);
-     }
+   const { street, city, state, zipCode } = stateDev;
+   if (!street || !city || !state || !zipCode) {
+     throw new Error("Address is incomplete — street, city, state, and zip are all required.");
    }
-   return { lat: stateDev.lat, lng: stateDev.lng };
+   const address = `${street}, ${city}, ${state} ${zipCode}`;
+   let results;
+   try {
+     ({ results } = await fromAddress(address));
+   } catch (err) {
+     throw new Error(`Address lookup failed: ${err?.message ?? "geocoding service error"}`);
+   }
+   const location = results?.[0]?.geometry?.location;
+   if (!location) {
+     throw new Error("Address not found. Check spelling or try a more specific address.");
+   }
+   return { lat: location.lat, lng: location.lng };
  };
 
  
@@ -119,10 +125,15 @@ const geocode = async () => {
 
  // Post
  const handleSubmit = async () => {
-   const obj = buildDevelopmentObject();
-   const coords = await geocode();
-   obj.lat = coords.lat;
-   obj.lng = coords.lng;
+   setFormError(null);
+   let coords;
+   try {
+     coords = await geocode();
+   } catch (err) {
+     setFormError(err.message);
+     return;
+   }
+   const obj = { ...buildDevelopmentObject(), lat: coords.lat, lng: coords.lng };
    await axios.post(`${API_BASE}/api/developments/`, obj, { headers: {
     Authorization: `Token ${userToken}`,
     }});
@@ -133,10 +144,15 @@ const geocode = async () => {
  // Put
 
  const handleEdit = async (id) => {
-   const obj = buildDevelopmentObject();
-   const coords = await geocode();
-   obj.lat = coords.lat;
-   obj.lng = coords.lng;
+   setFormError(null);
+   let coords;
+   try {
+     coords = await geocode();
+   } catch (err) {
+     setFormError(err.message);
+     return;
+   }
+   const obj = { ...buildDevelopmentObject(), lat: coords.lat, lng: coords.lng };
    await axios.put(`${API_BASE}/api/developments/${id}`, obj, { headers: {
     Authorization: `Token ${userToken}`,
     }});
@@ -152,14 +168,16 @@ const geocode = async () => {
    await refresh();
  };
 
- // everything components need 
+ // everything components need
  return {
    stateDev,
    setField,
    loadDevelopment,
    handleSubmit,
    handleEdit,
-   handleDelete,  
+   handleDelete,
+   formError,
+   clearFormError,
  };
 }
 

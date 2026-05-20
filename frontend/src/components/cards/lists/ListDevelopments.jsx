@@ -20,6 +20,7 @@ import { time12 } from "../../../functions/formatData";
 import DevelopmentsContext from "../../../contexts/DevelopmentsContext";
 import SvgIcon from "@mui/material/SvgIcon";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Alert from "@mui/material/Alert";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../../../../theme";
 import useDevelopmentForm from "../../../hooks/useDevelopmentForm";
@@ -30,7 +31,7 @@ export default function ListDevelopments() {
   const theme = useTheme();
   const color = colors(theme.palette.mode);
   const { developments: developmentsList } = useContext(DevelopmentsContext);
-  const { stateDev, setField, loadDevelopment, handleEdit, handleDelete } = useDevelopmentForm();
+  const { stateDev, setField, loadDevelopment, handleEdit, handleDelete, formError, clearFormError } = useDevelopmentForm();
   const { stateContact, setContactField, people, organization } = useContactForm();
 
   return (
@@ -306,6 +307,11 @@ export default function ListDevelopments() {
                   <MenuItem value={"canceled"}>Canceled</MenuItem>
                 </Select>
               </FormControl>
+              {formError && (
+                <Alert severity="error" onClose={clearFormError} sx={{ gridColumn: "1 / -1" }}>
+                  {formError}
+                </Alert>
+              )}
               <Button onClick={() => setField("open", false)}>Cancel</Button>
               <Button type="submit">Submit</Button>
             </Box>

@@ -13,11 +13,12 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Alert from "@mui/material/Alert";
 import useDevelopmentForm from "../../../hooks/useDevelopmentForm";
 import useContactForm from "../../../hooks/useContactForm";
 
 export default function DevelopmentForm() {
-  const { stateDev: state, setField, handleSubmit} = useDevelopmentForm();
+  const { stateDev: state, setField, handleSubmit, formError, clearFormError } = useDevelopmentForm();
   const { stateContact, setContactField, handleContactSubmit, people, organization } = useContactForm(); 
   
   return (
@@ -170,6 +171,8 @@ export default function DevelopmentForm() {
                             <TextField
                               variant="outlined"
                               label="Website"
+                              type="url"
+                              placeholder="https://example.com"
                               value={stateContact.website}
                               onChange={(e) => setContactField("website",e.target.value)}
                               fullWidth
@@ -189,6 +192,8 @@ export default function DevelopmentForm() {
                         <TextField
                           variant="outlined"
                           label="Email"
+                          type="email"
+                          placeholder="name@example.com"
                           value={stateContact.email}
                           onChange={(e) => setContactField("email",e.target.value)}
                           fullWidth
@@ -344,6 +349,11 @@ export default function DevelopmentForm() {
                 </FormControl>
               </Grid>
             </Grid>
+            {formError && (
+              <Alert severity="error" onClose={clearFormError} sx={{ mt: 1, mx: 1 }}>
+                {formError}
+              </Alert>
+            )}
             <Grid container direction="row" sx={{justifyContent: "flex-end",
     alignItems: "flex-end",}} size={{ xs: 10.8, sm: 10.8, md: 10.9, lg:11.9 }}>
           <Button sx={{ mt: 0 }} variant="contained" type="submit">
