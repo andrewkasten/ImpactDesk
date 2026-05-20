@@ -35,20 +35,31 @@ The app is built around in-person donor relationship work and daily fundraising 
 4. The frontend is at [http://localhost:5173/](http://localhost:5173/)
 5. The Django API is at [http://localhost:8000/](http://localhost:8000/)
 
-### Optional Environment Variables
+### Environment Variables
 
-Create a `frontend/.env` file if you want address geocoding and map marker generation to work with real user-entered addresses:
+Create a `.env` file at the project root with the backend settings the dev compose reads:
+```
+DJANGO_KEY=<any random string — `openssl rand -base64 50` works>
+DEBUG=True
+POSTGRES_DB=impactdesk
+POSTGRES_USER=impactdesk
+POSTGRES_PASSWORD=<any value for local dev>
+```
+Without these the api container starts with no `SECRET_KEY` and Postgres auth fails — the dev stack won't come up.
+
+Create a `frontend/.env` file with your Google Geocoding API key:
 ```
 VITE_GEOCODE_KEY=<your-google-geocode-api-key>
 ```
+The development form geocodes addresses on save and blocks the save if geocoding fails, so this is effectively required for adding new developments locally. Reading the dashboard works without it.
 
 ## Features
 
 - **User Authentication** -- Signup, login with DRF token, and logout. Dashboard routes and API endpoints are protected.
-- **Development Scheduling** -- Create and filter by day.
+- **Development Scheduling** -- Create, edit, delete, and filter by day.
 - **Interactive Map** -- Addresses are geocoded and displayed on the map.
 - **Contact Management** -- Create people and organizations with full address and contact details.
-- **Donation Tracking** -- View monthly donation bar chart and top donor summary.
+- **Donation Tracking** -- Record donations against a person or organization; view monthly bar chart, totals, and top donor summary.
 - **Dashboard Overview** -- At-a-glance cards, schedule count, total donations, a donation chart, and a top donors list.
 
 ## Demo Flow
