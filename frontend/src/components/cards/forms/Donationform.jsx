@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
+import { API_BASE } from "../../../api/config";
 
 // action returns {current state}, {new action}, {isPending} boolean
 
@@ -11,7 +12,7 @@ async function formAction(prevState, formData) {
 const token = localStorage.getItem("token");
   const formObject = Object.fromEntries(formData.entries());
 
-  await axios.post("http://localhost:8000/api/developments/", formObject, {
+  await axios.post(`${API_BASE}/api/developments/`, formObject, {
     headers: {
       Authorization: `Token ${token}`,
     },
