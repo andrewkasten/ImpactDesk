@@ -87,6 +87,8 @@ export default function ContactForm() {
                   <TextField
                     variant="outlined"
                     label="Website"
+                    type="url"
+                    placeholder="https://example.com"
                     value={stateContact.website}
                     onChange={(e) =>
                       setContactField("website", e.target.value)
@@ -111,6 +113,8 @@ export default function ContactForm() {
               <TextField
                 variant="outlined"
                 label="Email"
+                type="email"
+                placeholder="name@example.com"
                 value={stateContact.email}
                 onChange={(e) => setContactField("email", e.target.value)}
                 fullWidth
