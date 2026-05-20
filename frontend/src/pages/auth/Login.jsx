@@ -29,12 +29,7 @@ export default function Login({}) {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const context = {
-      username: formData.username,
-      password: formData.password,
-    };
+  const submitLogin = async (context) => {
     const result = await login(context);
     if (!result.ok) {
       setResponseMsg(result.error);
@@ -44,6 +39,18 @@ export default function Login({}) {
       setFormData({ username: "", password: "" });
       setShouldRedirect(true);
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await submitLogin({
+      username: formData.username,
+      password: formData.password,
+    });
+  };
+
+  const handleDemoLogin = async () => {
+    await submitLogin({ username: "demo", password: "demo" });
   };
   if (shouldRedirect) {
     return <Navigate to="/dashboard" />;
@@ -117,6 +124,16 @@ export default function Login({}) {
                 <Button variant="contained" type="submit">
                   Login
                 </Button>
+                <Button
+                  variant="outlined"
+                  type="button"
+                  onClick={handleDemoLogin}
+                >
+                  Try Demo
+                </Button>
+                <Typography variant="caption" sx={{ color: "text.secondary", textAlign: "center" }}>
+                  Demo account: <code>demo</code> / <code>demo</code>
+                </Typography>
               </Box>
             </CardContent>
           </Card>

@@ -1,9 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
 
-docker compose -f docker-compose.dev.yml down -v
-docker compose -f docker-compose.dev.yml build --no-cache
-docker compose -f docker-compose.dev.yml up -d
+COMPOSE="docker compose -f docker-compose.dev.yml"
+
+$COMPOSE down -v
+$COMPOSE build --no-cache
+$COMPOSE up -d
 
 sleep 5
-docker compose -f docker-compose.dev.yml exec api python manage.py makemigrations
-docker exec impactdesk-api-1 python manage.py migrate
-docker exec impactdesk-api-1 python manage.py loaddata initial_data
+
+$COMPOSE exec -T api python manage.py makemigrations
+$COMPOSE exec -T api python manage.py migrate
+$COMPOSE exec -T api python manage.py loaddata initial_data
+
+# Create / refresh the demo account
+$COMPOSE exec -T api python manage.py shell -c "
+from django.contrib.auth.models import User
+u, _ = User.objects.get_or_create(username='demo', defaults={'first_name': 'Demo'})
+u.set_password('demo')
+u.save()
+"
