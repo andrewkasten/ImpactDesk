@@ -17,8 +17,6 @@ export default function Sidenav() {
   const pathname = location.pathname;
   const [collapse, setCollapse] = useState(false);
 
-
-    console.log(pages)
   const handleCollapseMenu = () => {
     setCollapse(!collapse);
   };
