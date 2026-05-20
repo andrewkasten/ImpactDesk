@@ -1,10 +1,10 @@
+import { Link as RouterLink } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import mainDash from "../assets/main-dash.webp"
 
 export default function Hero() {
-
 return (
 <Stack
 spacing={2}
@@ -22,7 +22,7 @@ sx={{ alignItems: "center", width: { xs: "100%", sm: "70%" } }}
     fontSize: "clamp(3rem, 10vw, 3.5rem)",
   }}
 >
-  Develop stronger donor relationships. 
+  Develop stronger donor relationships.
 </Typography>
 <Typography
   sx={{
@@ -34,14 +34,16 @@ sx={{ alignItems: "center", width: { xs: "100%", sm: "70%" } }}
   Donor development is demanding. Impact Desk helps your team plan, prioritize, and guide fundraising efforts with confidence — so you can stay focused on your mission and impact.
 </Typography>
 <Button
+  component={RouterLink}
+  to="/login"
   variant="contained"
   color="primary"
   size="small"
   sx={{ minWidth: "fit-content" }}
 >
-  Explore
+  Try Demo
 </Button>
-<img style={{borderRadius:8, border: "2px solid gray", maxWidth: "105%", height:"auto", display:"block", margin:"20px"}} alt="image: dashboard home: side menu, development card, donation s card, donations graph, top donors list"src={mainDash} />             
+<img style={{borderRadius:8, border: "2px solid gray", maxWidth: "105%", height:"auto", display:"block", margin:"20px"}} alt="image: dashboard home: side menu, development card, donation s card, donations graph, top donors list"src={mainDash} />
 </Stack>
 
 )
