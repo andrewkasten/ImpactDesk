@@ -38,15 +38,15 @@ export default function Signup() {
       username: formData.username,
       password: formData.password,
     };
-    const response = await signup(context);
-    if (!response || !response.first_name) {
-        setShouldRedirect(false)
-        setResponseMsg(response)
-      } else {
-        setResponseMsg(response)
-        setSignupSuccess(true)
-        setTimeout(() => setShouldRedirect(true), 1500)
-      }   
+    const result = await signup(context);
+    if (result.ok) {
+      setResponseMsg("");
+      setSignupSuccess(true);
+      setTimeout(() => setShouldRedirect(true), 1500);
+    } else {
+      setShouldRedirect(false);
+      setResponseMsg(result.error);
+    }
   };
  
   if (shouldRedirect) {
@@ -134,7 +134,7 @@ export default function Signup() {
               </Box>
               
             </Card>
-            {shouldRedirect === false && <Alert sx={{mt:3}} variant="filled" severity="error">{responseMsg.username}</Alert>}
+            {shouldRedirect === false && <Alert sx={{mt:3}} variant="filled" severity="error">{responseMsg}</Alert>}
 
             {signupSuccess && <Alert sx={{mt:3}} variant="filled" severity="success">Signup Successful</Alert>}
           </Container>

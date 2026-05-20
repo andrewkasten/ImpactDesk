@@ -35,12 +35,12 @@ export default function Login({}) {
       username: formData.username,
       password: formData.password,
     };
-    const token = await login(context);
-    if (!token) {
-      setResponseMsg("Unable to log in with provided credentials.");
+    const result = await login(context);
+    if (!result.ok) {
+      setResponseMsg(result.error);
       setShouldRedirect(false);
     } else {
-      handleToken(token);
+      handleToken(result.token);
       setFormData({ username: "", password: "" });
       setShouldRedirect(true);
     }
