@@ -37,11 +37,18 @@ echo "==> Commenting out recipes :443 block in $CONF"
 # Prefix every line between the markers (inclusive) with "# "
 sed -i.bak '/^# BEGIN recipes-443$/,/^# END recipes-443$/ s/^/# /' "$CONF"
 
+echo "==> Recreating webserver container to pick up new compose settings"
+# `up -d` recreates the container if docker-compose.prod.yml changed
+# (e.g. new /opt/genui/dist volume, new extra_hosts). It also starts fresh
+# if the container wasn't running. The currently-commented default.conf is
+# bind-mounted, so nginx starts without needing the recipes cert.
+$COMPOSE up -d webserver
+
+# Give nginx a moment to be ready inside the new container before validating
+sleep 2
+
 echo "==> Validating nginx config"
 $COMPOSE exec -T webserver nginx -t
-
-echo "==> Reloading nginx"
-$COMPOSE exec -T webserver nginx -s reload
 
 echo "==> Issuing cert for recipes.andrewkasten.cv"
 $COMPOSE run --rm certbot certonly \
