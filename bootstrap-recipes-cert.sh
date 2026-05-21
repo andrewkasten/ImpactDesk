@@ -56,8 +56,13 @@ $COMPOSE run --rm certbot certonly \
   -d recipes.andrewkasten.cv \
   --email "$EMAIL" --agree-tos --no-eff-email
 
-echo "==> Restoring full $CONF from git"
-git checkout "$CONF"
+echo "==> Restoring full $CONF from git (in-place write to preserve inode)"
+# Use `git show > file` instead of `git checkout file` because git checkout
+# does an atomic replace (write-temp-then-rename), giving the file a new
+# inode. Docker single-file bind mounts can stay pinned to the old inode,
+# so the container would keep serving the commented version. Writing via
+# `>` truncates the existing file in place and keeps the same inode.
+git show HEAD:"$CONF" > "$CONF"
 rm -f "$CONF.bak"
 
 echo "==> Validating + reloading nginx with full config"
