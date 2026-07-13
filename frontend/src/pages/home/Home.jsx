@@ -32,13 +32,12 @@ export default function Home() {
         </Container>
       </Box>
        <Box
-        sx={{
-          bgcolor: "grey.800",          
+        sx={{          
           backgroundSize: "100%",
           display: "flex",          
         }}
       >
-        <Features />
+        <Features class="features" />
         
         </Box>
       <Footer />
