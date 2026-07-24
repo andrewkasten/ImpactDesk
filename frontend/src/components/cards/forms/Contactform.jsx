@@ -31,7 +31,7 @@ export default function ContactForm() {
                 <InputLabel id="contact-type">Type</InputLabel>
                 <Select
                   fullWidth
-                  labelID="contact-type"
+                  labelid="contact-type"
                   value={stateContact.selectTypeContact}
                   onChange={(e) =>
                     setContactField("selectTypeContact", e.target.value)
