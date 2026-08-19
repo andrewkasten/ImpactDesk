@@ -1,9 +1,10 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { loadEnv } from 'vite';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig({ 
   plugins: [react()],
   test: {
     // jsdom gives us a browser-like DOM (document, window) in Node.
@@ -12,5 +13,6 @@ export default defineConfig({
     globals: true,
     // Runs once before the test files (registers the jest-dom matchers).
     setupFiles: './src/test/setup.js',
+    env: loadEnv('', process.cwd(), ''),
   },
 })
