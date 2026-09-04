@@ -9,7 +9,9 @@ $COMPOSE up -d
 
 sleep 5
 
-$COMPOSE exec -T api python manage.py makemigrations
+# Migrations are committed to the repo, so only apply them here. Generating them in
+# the container would write files the host never sees — the api service has no bind
+# mount, so anything it creates is lost on the next build.
 $COMPOSE exec -T api python manage.py migrate
 $COMPOSE exec -T api python manage.py loaddata initial_data
 
