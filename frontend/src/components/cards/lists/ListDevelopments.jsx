@@ -3,6 +3,8 @@ import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -38,7 +40,12 @@ export default function ListDevelopments() {
     <>
       <Card elevation={1} sx={{ borderRadius: 4, pb: 2 }}>
         <CardContent>
-          <Typography variant="subtitle">Schedule</Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Typography variant="subtitle">Schedule</Typography>
+            <IconButton aria-label="add development" size="small" color="primary">
+              <AddIcon />
+            </IconButton>
+          </Box>
           {developmentsList.map((development, index) => (
             <List key={index}>
               <ListItem>

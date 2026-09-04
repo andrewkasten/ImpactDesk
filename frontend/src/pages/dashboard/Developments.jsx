@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Map from "../../components/cards/maps/Map.jsx";
 import ListDevelopments from "../../components/cards/lists/ListDevelopments.jsx";
+import TableDevelopments from "../../components/cards/charts-tables/TableDevelopments.jsx";
 import DevelopmentForm from "../../components/cards/forms/DevelopmentForm.jsx";
 import { useState, useContext} from "react"
 import dayjs from "dayjs"; //day.js.org
@@ -46,7 +47,7 @@ export default function Developments() {
 
   return (
     <>
-      <DevelopmentsContext.Provider value={{ developments: developmentsList, refreshDevelopments }}>
+      <DevelopmentsContext.Provider value={{ developments: developmentsList, refreshDevelopments, selectedDay }}>
       <Typography variant="h4" textAlign="center" color="primary"> Development Schedule</Typography>
       <Typography sx={{pt:3}}variant="h6" fontSize= "18px" textAlign="center">{selectedDay.format('MMMM YYYY')}</Typography>
       <Grid sx={{display: "flex", pt:.5, justifyContent: "center"}}>
@@ -86,6 +87,9 @@ export default function Developments() {
           </Grid>
           <Grid size={{ xs: 12, md: 12, lg: 6 }}>
             <Map />
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <TableDevelopments />
           </Grid>
           <Grid size={{ xs: 12, md: 12, lg: 13 }}>
             <DevelopmentForm />
