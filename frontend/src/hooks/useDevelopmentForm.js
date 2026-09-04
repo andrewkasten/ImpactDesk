@@ -29,6 +29,21 @@ const initialState = {
   editId: null,
 };
 
+// Fields where an empty value has to be sent as an explicit null: the time columns
+// reject "", and the contact FKs must be nulled out when the other one is chosen.
+const NULLABLE_FIELDS = new Set(["time", "end_time", "people", "organization"]);
+
+const toPayload = (fields) => {
+  const payload = {};
+  for (const [key, value] of Object.entries(fields)) {
+    const empty = value === "" || value === null || value === undefined;
+    if (NULLABLE_FIELDS.has(key)) payload[key] = empty ? null : value;
+    else if (empty && key === "date") continue; // the model has no null date
+    else payload[key] = value;
+  }
+  return payload;
+};
+
 function developmentReducer(stateDev, action) {
   switch (action.type) {
     case "SET_FIELD": // Update one field:  dispatch({ type: "SET_FIELD", field: "street", value: "123 Main" })
@@ -160,6 +175,25 @@ const geocode = async () => {
    await refresh();
  };
 
+ // Post a partially filled development — used by the schedule table, where a row is
+ // created from the first field the user edits and completed one field at a time.
+ const createDevelopment = async (fields) => {
+   const { data } = await axios.post(`${API_BASE}/api/developments/`, toPayload(fields), { headers: {
+    Authorization: `Token ${userToken}`,
+    }});
+   await refresh();
+   return data;
+ };
+
+ // Put one field (the detail view treats PUT as partial).
+ const patchDevelopment = async (id, patch) => {
+   const { data } = await axios.put(`${API_BASE}/api/developments/${id}`, toPayload(patch), { headers: {
+    Authorization: `Token ${userToken}`,
+    }});
+   await refresh();
+   return data;
+ };
+
  // Delete
  const handleDelete = async (id) => {
    await axios.delete(`${API_BASE}/api/developments/${id}`, { headers: {
@@ -176,6 +210,8 @@ const geocode = async () => {
    handleSubmit,
    handleEdit,
    handleDelete,
+   createDevelopment,
+   patchDevelopment,
    formError,
    clearFormError,
  };

@@ -5,10 +5,14 @@ export function formatDate(str){
 
 }
 
+// Developments can be saved before they have times, so guard the empty case —
+// without it `new Date('1970-01-01TnullZ')` renders "Invalid Date".
 export function time12(str){
 
-  str = new Date('1970-01-01T' + str + 'Z')
+  if (!str) return "—"
+  const date = new Date('1970-01-01T' + str + 'Z')
+  if (Number.isNaN(date.getTime())) return "—"
+  return date
   .toLocaleTimeString('en-US', {timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'})
-  return str
-  
+
 }

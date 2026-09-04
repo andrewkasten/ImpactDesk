@@ -18,8 +18,16 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+// A development can be saved before it has an address, and lat/lng default to 0 —
+// plotting those would drop a marker in the ocean off the coast of Africa.
+const hasCoords = (development) => {
+  const lat = Number(development?.lat)
+  const lng = Number(development?.lng)
+  return Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0)
+}
+
 export default function Map() {
-  const { developments } = useContext(DevelopmentsContext)  
+  const { developments } = useContext(DevelopmentsContext)
   const developmentList = Array.isArray(developments) ? developments : []
    //activities?.map only checks if undefined or null not wrong type, .map needs an array []
   return (
@@ -36,7 +44,7 @@ export default function Map() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {developmentList.map((development) => (
+            {developmentList.filter(hasCoords).map((development) => (
                 <Marker
                   key={development.id}
                   position={[development.lat, development.lng]}

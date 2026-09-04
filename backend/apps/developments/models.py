@@ -13,7 +13,7 @@ class Developments(models.Model):
         ("pending" , "Pending")
     ]
 
-    type = models.CharField(max_length=255)
+    type = models.CharField(max_length=255, blank=True)
     date =  models.DateField(default=date.today)
     time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
