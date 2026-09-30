@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import axios from 'axios'
 import DevelopmentForm from './DevelopmentForm'
 import AuthContext from '../../../contexts/AuthContext'
+import DevelopmentsContext from '../../../contexts/DevelopmentsContext'
 
 // - Mocks -
 // A unit test doesn't hit the real network. Replace axios with fakes so
@@ -19,13 +20,25 @@ vi.mock('swr', () => ({
   default: () => ({ data: [], mutate: vi.fn() }),
 }))
 
+// useDevelopmentForm calls setKey/setLocationType at import time and
+// fromAddress on submit. Stub them so no key is needed and nothing hits Google.
+vi.mock('react-geocode', () => ({
+  setKey: vi.fn(),
+  setLocationType: vi.fn(),
+  fromAddress: vi.fn().mockResolvedValue({
+    results: [{ geometry: { location: { lat: 1, lng: 2 } } }],
+  }),
+}))
+
 // The hook reads `userToken` via useContext(AuthContext). AuthContext has no
 // default value, so it must wrap the component in a Provider or the hook
 // throws on the destructure. This helper does that for every test.
 function renderDevelopmentForm({ userToken = 'test-token' } = {}) {
   return render(
     <AuthContext.Provider value={{ userToken }}>
-      <DevelopmentForm />
+      <DevelopmentsContext.Provider value={{ refreshDevelopments: vi.fn() }}>
+        <DevelopmentForm />
+      </DevelopmentsContext.Provider>
     </AuthContext.Provider>,
   )
 }
@@ -43,7 +56,7 @@ describe('ContactForm', () => {
     // Query the way a user perceives the UI — by role and accessible name —
     // not by CSS class or test id, role doesn't change.
     expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument()
-    expect(screen.getByRole('combobox')).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: /type/i })).toBeInTheDocument()
   })
 
  
